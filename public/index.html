@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestiário - Compêndio de Campanha</title>
+
+<!-- IMPORTANDO O NOSSO "BANCO DE DADOS" (Índice) -->
+<script src="dados.js"></script>
+
+<style>
+    /* -------------------------------------------
+       VARIÁVEIS GERAIS
+       ------------------------------------------- */
+    :root {
+        --bg-dark: #121212;
+        --bg-panel: #1e1e1e;
+        --bg-subpanel: #161616;
+        --border-color: #333;
+        --text-light: #dcdcdc;
+        --accent-gold: #d49a37;
+        --tab-bg: #2a2a2a;
+        --tab-active-border: #ffffff;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0; 
+        padding: 0;
+        background-color: var(--bg-dark); 
+        color: var(--text-light);
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex; 
+        height: 100vh; 
+        overflow: hidden;
+    }
+
+    /* -------------------------------------------
+       LAYOUT PRINCIPAL (PC)
+       ------------------------------------------- */
+    .sidebar { 
+        width: 220px; 
+        flex-shrink: 0; 
+        background-color: var(--bg-panel); 
+        border-right: 1px solid var(--border-color); 
+        display: flex; 
+        flex-direction: column; 
+        z-index: 10; 
+    }
+    
+    .sidebar-header { 
+        padding: 20px; 
+        font-size: 18px; 
+        font-weight: bold; 
+        color: var(--accent-gold); 
+        border-bottom: 1px solid var(--border-color); 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+        text-align: center;
+    }
+
+    .nav-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+    .nav-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background 0.2s; }
+    .nav-item:hover, .nav-item.active { background-color: #333; color: var(--accent-gold); border-left: 4px solid var(--accent-gold); padding-left: 16px; }
+
+    .main-content { flex: 1; display: flex; flex-direction: row; overflow: hidden; }
+
+    .item-list-sidebar { 
+        width: 250px; 
+        flex-shrink: 0; 
+        background-color: var(--bg-subpanel); 
+        border-right: 1px solid var(--border-color); 
+        display: flex; 
+        flex-direction: column;
+    }
+
+    .list-header { padding: 15px; font-size: 14px; color: #888; border-bottom: 1px solid var(--border-color); background: #111; text-transform: uppercase; letter-spacing: 1px; }
+    
+    .item-list-scroll { flex: 1; overflow-y: auto; }
+    .item-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+    .list-item { padding: 12px 15px; font-size: 15px; cursor: pointer; border-bottom: 1px solid #222; transition: all 0.2s; }
+    .list-item:hover { background-color: #2a2a2a; }
+    .list-item.active { background-color: var(--accent-gold); color: #000; font-weight: bold; }
+
+    .item-display-area { flex: 1; overflow-y: auto; padding: 30px; background-color: var(--bg-dark); }
+
+    /* -------------------------------------------
+       SISTEMA DE ABAS (TABS)
+       ------------------------------------------- */
+    .tabs-header { display: flex; gap: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { background-color: transparent; color: #888; border: 1px solid transparent; padding: 8px 16px; font-size: 14px; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+    .tab-btn:hover { color: var(--text-light); background-color: var(--tab-bg); }
+    .tab-btn.active { color: var(--text-light); border: 1px solid var(--tab-active-border); background-color: var(--tab-bg); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* -------------------------------------------
+       FICHA DE MONSTRO (STAT BLOCK) & TOKEN
+       ------------------------------------------- */
+    .page-container { display: flex; flex-direction: row; align-items: flex-start; gap: 40px; max-width: 1200px; margin: 0 auto; }
+    
+    .token-container { flex: 0 0 auto; position: sticky; top: 0px; display: flex; justify-content: center; }
+    .token-image { width: 320px; height: 320px; border-radius: 50%; object-fit: cover; object-position: center 20%; border: 7px solid #b58212; box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.8); background-color: #111; }
+    .resource-panel { display: flex; flex-direction: column; gap: 15px; width: 320px; flex: 0 0 auto; }
+    .resource-panel:empty { display: none; }
+    .resource-label { color: var(--accent-gold); font-size: 13px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+    .resource-audio { width: 100%; }
+    
+    .images-container { display: flex; justify-content: center; align-items: center; padding: 20px 0; }
+    .full-artwork { max-width: 100%; max-height: 80vh; border: 2px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.8); border-radius: 8px; object-fit: contain; }
+
+    .monster-card { flex: 1; width: 100%; max-width: 700px; padding: 16px 20px; background: linear-gradient(rgba(249, 239, 209, 0.94), rgba(249, 239, 209, 0.94)), repeating-linear-gradient(0deg, rgba(120, 90, 40, 0.04) 0, rgba(120, 90, 40, 0.04) 1px, transparent 1px, transparent 4px); border-top: 7px solid #b58212; border-bottom: 7px solid #b58212; box-shadow: 0 0 0 2px #222; font-family: Georgia, "Times New Roman", serif; color: #2b241b; word-wrap: break-word; }
+    
+    .monster-card h1 { margin: 0; color: #8a211d; font-size: clamp(24px, 4vw, 31px); font-variant: small-caps; letter-spacing: 1px; }
+    .monster-card .subtitle { font-style: italic; font-size: 16px; margin-top: 2px; margin-bottom: 9px; }
+    .monster-card .red-line { border: 0; height: 2px; background: #9c3028; margin: 8px 0; }
+    .monster-card .stats-line { font-size: 15px; line-height: 1.45; }
+    .monster-card .label { font-weight: bold; }
+    
+    /* Tabela de Atributos Responsiva */
+    .monster-card .abilities { width: 100%; border-collapse: collapse; text-align: center; margin: 12px 0; table-layout: fixed; }
+    .monster-card .abilities th { color: #8a211d; font-size: clamp(12px, 3vw, 15px); }
+    .monster-card .abilities td { font-weight: bold; font-size: clamp(11px, 3vw, 14px); padding-top: 2px; }
+    
+    .monster-card .section-title { margin-top: 15px; color: #8a211d; font-size: 21px; font-variant: small-caps; border-bottom: 2px solid #a54a3b; padding-bottom: 2px; }
+    .monster-card .trait-title { font-weight: bold; font-style: italic; text-transform: uppercase; }
+    .monster-card p { margin: 8px 0; font-size: 15px; line-height: 1.45; }
+
+    /* Outras Páginas (Info, NPCs, etc) */
+    .info-container { background-color: var(--bg-panel); border: 1px solid var(--border-color); padding: 20px; border-radius: 6px; max-width: 900px; margin: 0 auto; }
+    .info-title { color: var(--accent-gold); font-size: clamp(20px, 4vw, 24px); font-variant: small-caps; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+    .info-text { font-size: 16px; line-height: 1.6; color: var(--text-light); }
+
+
+    /* -------------------------------------------
+       RESPONSIVIDADE MODO TABLET (< 1100px)
+       ------------------------------------------- */
+    @media (max-width: 1100px) {
+        /* Empilha o Token e a Ficha na área de visualização */
+        .page-container { flex-direction: column; align-items: center; gap: 20px; }
+        .token-container { position: static; margin-bottom: 10px; }
+        .monster-card { max-width: 100%; }
+    }
+
+    /* -------------------------------------------
+       RESPONSIVIDADE MODO TELEMÓVEL (< 768px)
+       ------------------------------------------- */
+    @media (max-width: 768px) {
+        body { flex-direction: column; overflow-y: auto; }
+
+        /* Menu Principal (Sidebar) vira barra horizontal no topo */
+        .sidebar { width: 100%; flex-direction: row; border-right: none; border-bottom: 1px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .sidebar-header { display: none; } /* Oculta o título do Compêndio para ganhar espaço */
+        .nav-list { flex-direction: row; width: max-content; }
+        .nav-item { border-bottom: none; border-left: none !important; border-right: 1px solid var(--border-color); text-align: center; white-space: nowrap; padding: 12px 20px; }
+        .nav-item.active { border-bottom: 3px solid var(--accent-gold); }
+
+        /* Sub-Menu (Lista de monstros) vira "Tags" deslizáveis */
+        .main-content { flex-direction: column; overflow: visible; }
+        .item-list-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); background: var(--bg-dark); }
+        .list-header { display: none; }
+        
+        .item-list-scroll { overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 10px; -webkit-overflow-scrolling: touch; }
+        .item-list { flex-direction: row; gap: 10px; width: max-content; }
+        .list-item { border: 1px solid var(--border-color); border-radius: 20px; padding: 8px 16px; }
+
+        /* Área de Exibição */
+        .item-display-area { padding: 15px 10px; overflow-y: visible; }
+        
+        /* Ajuste do Token no telemóvel */
+        .token-image { width: 220px; height: 220px; border-width: 4px; }
+        .resource-panel { width: min(320px, 100%); }
+    }
+</style>
+</head>
+<body onload="initCompendium()">
+
+    <!-- BARRA LATERAL (Categorias) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">Compêndio Épico</div>
+        <ul class="nav-list">
+            <li class="nav-item active" data-cat="monsters" onclick="navigateCategory('monsters', this)">Monstros</li>
+            <li class="nav-item" data-cat="npcs" onclick="navigateCategory('npcs', this)">NPCs</li>
+            <li class="nav-item" data-cat="maps" onclick="navigateCategory('maps', this)">Mapas</li>
+            <li class="nav-item" data-cat="items" onclick="navigateCategory('items', this)">Itens</li>
+            <li class="nav-item" data-cat="curio" onclick="navigateCategory('curio', this)">Curiosidades</li>
+            <li class="nav-item" data-cat="session" onclick="navigateCategory('session', this)">Planos de Sessão</li>
+        </ul>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main class="main-content">
+        <!-- Lista Dinâmica -->
+        <div class="item-list-sidebar">
+            <div class="list-header" id="dynamic-list-title">Lista</div>
+            <div class="item-list-scroll">
+                <ul class="item-list" id="dynamic-item-list"></ul>
+            </div>
+        </div>
+        
+        <!-- Onde a Ficha (HTML Externo) vai aparecer -->
+        <div class="item-display-area" id="dynamic-display-area"></div>
+    </main>
+
+    <!-- -------------------------------------------
+         SCRIPTS MESTRES DE LÓGICA E NAVEGAÇÃO
+         ------------------------------------------- -->
+    <script>
+        let currentCategory = 'monsters';
+
+        // Iniciar App
+        function initCompendium() {
+            navigateCategory('monsters', document.querySelector('.nav-item[data-cat="monsters"]'));
+        }
+
+        // Trocar Categoria
+        function navigateCategory(categoryName, element) {
+            document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+            
+            currentCategory = categoryName;
+            document.getElementById('dynamic-list-title').textContent = "Lista de " + categoryName;
+            
+            const listContainer = document.getElementById('dynamic-item-list');
+            const displayArea = document.getElementById('dynamic-display-area');
+            listContainer.innerHTML = ''; 
+
+            const items = compendioData[categoryName];
+
+            if (!items || Object.keys(items).length === 0) {
+                listContainer.innerHTML = '<li class="list-item" style="color:#666; cursor:default;">Vazio</li>';
+                displayArea.innerHTML = '<div class="info-container"><h2 class="info-title">Nenhum Registo</h2><p class="info-text">Adicione ficheiros a esta categoria no dados.js.</p></div>';
+                return;
+            }
+
+            let firstItemKey = null;
+            let firstElement = null;
+
+            for (const [key, data] of Object.entries(items)) {
+                if (!firstItemKey) firstItemKey = key; 
+                
+                const li = document.createElement('li');
+                li.className = 'list-item';
+                li.textContent = data.title;
+                li.onclick = function() { loadItem(key, this); };
+                listContainer.appendChild(li);
+                
+                if(!firstElement) firstElement = li;
+            }
+
+            if (firstItemKey) {
+                loadItem(firstItemKey, firstElement);
+            }
+        }
+
+        // Lógica dos Botões das Abas (Dentro do ficheiro injetado)
+        function openTab(btnElement, tabClassName) {
+            const displayArea = document.getElementById('dynamic-display-area');
+            displayArea.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            displayArea.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            displayArea.querySelector('.' + tabClassName).classList.add('active');
+        }
+
+        // Parser para adicionar dinamicamente.
+        function jsonToStatblock(json) {
+            // 1. Funções Auxiliares (Limpadores e Formatadores)
+            const getMod = (score) => {
+                const mod = Math.floor((score - 10) / 2);
+                return mod >= 0 ? `+${mod}` : mod;
+            };
+
+            const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+            // Limpa a sintaxe suja do 5etools (ex: {@hit 19} vira 19, {@condition Grappled|XPHB} vira Grappled)
+            const cleanTags = (text) => {
+                if (!text) return "";
+                return text
+                    .replace(/\{@h\}/g, "<em>Hit:</em> ")
+                    .replace(/\{@atkr m\}/g, "<em>Melee Attack:</em>")
+                    .replace(/\{@atkr r\}/g, "<em>Ranged Attack:</em>")
+                    .replace(/\{@recharge\s?([^}]+)?\}/g, "(Recharge $1)")
+                    .replace(/\{@[a-zA-Z]+\s([^}|]+)(?:\|[^}]+)?\}/g, "$1");
+            };
+
+            // Formata o subtítulo (Tamanho, Tipo, Alinhamento)
+            const sizeMap = { "T": "Tiny", "S": "Small", "M": "Medium", "L": "Large", "H": "Huge", "G": "Gargantuan" };
+            const size = sizeMap[json.size[0]] || "Medium";
+            
+            let type = typeof json.type === 'string' ? json.type : json.type.type;
+            if (json.type.tags) type += ` (${json.type.tags.join(", ")})`;
+            
+            const alignMap = { "U": "Unaligned", "L": "Lawful", "C": "Chaotic", "E": "Evil", "G": "Good", "N": "Neutral" };
+            const align = json.alignment.map(a => alignMap[a] || a).join(" ") || "Unaligned";
+
+            const subtitle = `${size} ${type}, ${align}`.toLowerCase();
+
+            // Formata a CA (Alguns JSONs têm números, outros têm objetos)
+            const ac = typeof json.ac[0] === 'number' ? json.ac[0] : json.ac[0].ac;
+
+            // 2. Início da Construção do HTML
+            let html = `
+            <div class="monster-card">
+                <h1>${json.name}</h1>
+                <div class="subtitle">${capitalize(subtitle)}</div>
+                <hr class="red-line">
+                
+                <div class="stats-line"><span class="label">Armor Class</span> ${ac}</div>
+                <div class="stats-line"><span class="label">Hit Points</span> ${json.hp.average} (${json.hp.formula})</div>
+                <div class="stats-line"><span class="label">Speed</span> ${Object.entries(json.speed).map(([k, v]) => `${k !== 'walk' ? k + ' ' : ''}${v} ft.`).join(", ")}</div>
+                
+                <hr class="red-line">
+                
+                <table class="abilities">
+                    <tr><th>STR</th><th>DEX</th><th>CON</th><th>INT</th><th>WIS</th><th>CHA</th></tr>
+                    <tr>
+                        <td>${json.str} (${getMod(json.str)})</td>
+                        <td>${json.dex} (${getMod(json.dex)})</td>
+                        <td>${json.con} (${getMod(json.con)})</td>
+                        <td>${json.int} (${getMod(json.int)})</td>
+                        <td>${json.wis} (${getMod(json.wis)})</td>
+                        <td>${json.cha} (${getMod(json.cha)})</td>
+                    </tr>
+                </table>
+                
+                <hr class="red-line">
+            `;
+
+            // 3. Blocos Condicionais (O que separa o Esqueleto do Tarrasque)
+            if (json.save) {
+                const saves = Object.entries(json.save).map(([k, v]) => `${capitalize(k)} ${v}`).join(", ");
+                html += `<div class="stats-line"><span class="label">Saving Throws</span> ${saves}</div>`;
+            }
+            
+            if (json.skill) {
+                const skills = Object.entries(json.skill).map(([k, v]) => `${capitalize(k)} ${v}`).join(", ");
+                html += `<div class="stats-line"><span class="label">Skills</span> ${skills}</div>`;
+            }
+
+            if (json.vulnerable) html += `<div class="stats-line"><span class="label">Damage Vulnerabilities</span> ${json.vulnerable.join(", ")}</div>`;
+            if (json.resist) html += `<div class="stats-line"><span class="label">Damage Resistances</span> ${json.resist.join(", ")}</div>`;
+            if (json.immune) html += `<div class="stats-line"><span class="label">Damage Immunities</span> ${json.immune.join(", ")}</div>`;
+            if (json.conditionImmune) html += `<div class="stats-line"><span class="label">Condition Immunities</span> ${json.conditionImmune.join(", ")}</div>`;
+            
+            if (json.senses) html += `<div class="stats-line"><span class="label">Senses</span> ${json.senses.join(", ")}, passive Perception ${json.passive}</div>`;
+            
+            const languages = json.languages ? json.languages.join(", ") : "—";
+            html += `<div class="stats-line"><span class="label">Languages</span> ${languages}</div>`;
+            
+            if (json.cr) html += `<div class="stats-line"><span class="challenge">Challenge</span> ${json.cr}</div>`;
+
+            html += `<hr class="red-line">`;
+
+            // 4. Renderizador de Ações (Traits, Actions, Legendary)
+            const renderSection = (title, dataArray) => {
+                if (!dataArray || dataArray.length === 0) return "";
+                let secHtml = title ? `<div class="section-title">${title}</div>` : "";
+                
+                dataArray.forEach(item => {
+                    secHtml += `<p><span class="trait-title">${item.name}.</span> ${cleanTags(item.entries.join(" "))}</p>`;
+                });
+                return secHtml;
+            };
+
+            html += renderSection(null, json.trait); // Traits não têm título de seção
+            html += renderSection("Actions", json.action);
+            html += renderSection("Bonus Actions", json.bonus);
+            html += renderSection("Reactions", json.reaction);
+            
+            if (json.legendary) {
+                html += `<div class="section-title">Legendary Actions</div>`;
+                html += `<p>The monster can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The monster regains spent legendary actions at the start of its turn.</p>`;
+                html += renderSection(null, json.legendary);
+            }
+
+            html += `</div>`; // Fecha .monster-card
+            return html;
+        }
+
+        // A função jsonToStatblock deve estar colada algures aqui no seu <script> ou num ficheiro parser.js carregado no topo.
+        async function fetchWithRetry(path, attempts = 2) {
+            let lastError;
+
+            for (let attempt = 1; attempt <= attempts; attempt++) {
+                try {
+                    const response = await fetch(path, attempt === 1 ? { cache: "no-cache" } : { cache: "reload" });
+                    if (!response.ok) {
+                        throw new Error(`O Ficheiro não foi encontrado: ${path} (${response.status})`);
+                    }
+                    return response;
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+
+            throw lastError;
+        }
+
+        function parseJsonWithFallback(rawText, path) {
+            const candidates = [rawText.replace(/^\uFEFF/, "").trim()];
+            const fencedJson = candidates[0].match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);
+
+            if (fencedJson) candidates.push(fencedJson[1].trim());
+
+            for (const candidate of candidates) {
+                try {
+                    const parsed = JSON.parse(candidate);
+                    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+                        throw new Error("o conteúdo raiz precisa ser um objeto JSON");
+                    }
+                    return parsed;
+                } catch (error) {
+                    // Tenta o próximo formato antes de reportar a falha.
+                }
+            }
+
+            throw new Error(`Não foi possível interpretar o JSON de ${path}. Verifique a sintaxe e o conteúdo do arquivo.`);
+        }
+
+        async function loadItem(itemKey, element) {
+            const parentList = element.closest('.item-list');
+            parentList.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            const displayArea = document.getElementById('dynamic-display-area');
+            const itemData = compendioData[currentCategory][itemKey];
+
+            try {
+                displayArea.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;">Decifrando runas...</div>';
+                
+                // Faz o download do ficheiro (seja HTML ou JSON)
+                const response = await fetchWithRetry(itemData.path);
+
+                let htmlFinal = "";
+
+                // O SISTEMA DE BIFURCAÇÃO
+                if (itemData.tipo === "json") {
+                    // Lê como texto para permitir recuperação de BOM e blocos Markdown.
+                    const rawText = await response.text();
+                    const rawJson = parseJsonWithFallback(rawText, itemData.path);
+                    
+                    // 2. Passa o JSON pelo nosso Parser para virar Ficha
+                    // const statblockHtml = jsonToStatblock(rawJson);
+                    // Agora chamamos a função mestra que descobre sozinha se é Item, Monstro ou Lore!
+                    const statblockHtml = renderItemFromJson(rawJson, itemData);
+                    
+                    // 3. Envolve a ficha no sistema de abas para manter o padrão
+                    htmlFinal = `
+                        <div class="item-detail active">
+                            <div class="tabs-header">
+                                <button class="tab-btn active" onclick="openTab(this, 'tab-statblock')">Stat Block</button>
+                                <button class="tab-btn" onclick="openTab(this, 'tab-info')">Info</button>
+                            </div>
+                            <div class="tab-content tab-statblock active">
+                                <div class="page-container">
+                                    ${statblockHtml}
+                                </div>
+                            </div>
+                            <div class="tab-content tab-info">
+                                <div class="info-container">
+                                    <h2 class="info-title">Dados Importados</h2>
+                                    <p class="info-text">Este monstro foi importado através do arquivo <code>${itemData.path}</code>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Se for HTML, apenas injeta o texto cru exatamente como antes
+                    htmlFinal = await response.text();
+                }
+
+                displayArea.innerHTML = htmlFinal;
+
+                // Auto-scroll para telemóveis
+                if(window.innerWidth <= 768) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+            } catch (error) {
+                displayArea.innerHTML = `
+                    <div class="info-container" style="border-color: #9c3028;">
+                        <h2 class="info-title" style="color: #9c3028;">Erro Dimensional</h2>
+                        <p class="info-text">${error.message}</p>
+                    </div>`;
+            }
+        }
+
+        // Função Principal (Deteta o tipo e envia para o renderizador correto)
+        function getResourcePaths(itemData) {
+            if (!itemData || !itemData.path) return {};
+
+            const pathParts = itemData.path.split('/');
+            const fileName = pathParts.pop().replace(/\.json$/i, '');
+            const directory = pathParts.join('/');
+            const candidates = (suffixes, extensions = ['png', 'jpg', 'jpeg', 'webp']) => suffixes.flatMap(suffix => extensions.map(extension => `${directory}/${fileName}${suffix}.${extension}`));
+
+            return {
+                token: candidates(['', '-token', '_token']),
+                fluff: candidates(['-art', '_art', '-fluff', '_fluff', '-big', '_big'], ['png', 'jpg', 'jpeg', 'webp']),
+                audio: candidates([''], ['opus', 'mp3', 'ogg'])
+            };
+        }
+
+        function renderFallbackImage(paths, alt, className) {
+            if (!paths.length) return '';
+            const serializedPaths = JSON.stringify(paths).replace(/"/g, '&quot;');
+            return `<img src="${paths[0]}" alt="${alt}" class="${className}" data-fallback-paths="${serializedPaths}" data-fallback-index="0" onerror="advanceResource(this)">`;
+        }
+
+        function advanceResource(element) {
+            const paths = JSON.parse(element.dataset.fallbackPaths || '[]');
+            const nextPath = Number(element.dataset.fallbackIndex || 0) + 1;
+            if (nextPath < paths.length) {
+                element.dataset.fallbackIndex = nextPath;
+                element.src = paths[nextPath];
+            } else {
+                element.remove();
+            }
+        }
+
+        function renderResources(json, itemData) {
+            const paths = getResourcePaths(itemData);
+            const resources = [];
+
+            if (json.hasToken) {
+                const token = renderFallbackImage(paths.token, `Token de ${json.name || 'criatura'}`, 'token-image');
+                if (token) resources.push(`<div class="token-container">${token}</div>`);
+            }
+
+            if (json.hasFluffImages) {
+                const fluff = renderFallbackImage(paths.fluff, `Arte de ${json.name || 'criatura'}`, 'full-artwork');
+                if (fluff) resources.push(`<div class="images-container">${fluff}</div>`);
+            }
+
+            if (json.soundClip && paths.audio.length) {
+                resources.push(`<div><div class="resource-label">Som</div><audio class="resource-audio" controls preload="none" src="${paths.audio[0]}" onerror="this.parentElement.remove()"></audio></div>`);
+            }
+
+            return resources.join('');
+        }
+
+        function renderItemFromJson(json, itemData) {
+            if (!json) return `<div class="info-container"><p>JSON Inválido ou Vazio.</p></div>`;
+
+            // DETEÇÃO DE TIPO:
+            // Se tiver hp e atributos, é Monstro ou NPC
+            if (json.hp && json.str !== undefined) {
+                return `<div class="resource-panel">${renderResources(json, itemData)}</div>${renderMonsterStatblock(json)}`;
+            } 
+            // Se tiver rarity, weight ou type genérico curto (como "TG"), é Item
+            else if (json.rarity || json.weight || json.value) {
+                return renderItemStatblock(json);
+            } 
+            // Se não reconhecer, renderiza como um artigo genérico
+            else {
+                return renderGenericArticle(json);
+            }
+        }
+
+        // ---------------------------------------------------------
+        // UTILITÁRIOS (Limpam as tags crípticas do 5etools)
+        // ---------------------------------------------------------
+        const cleanTags = (text) => {
+            if (typeof text !== 'string') return "";
+            return text
+                .replace(/\{@h\}/g, "<em>Hit:</em> ")
+                .replace(/\{@atkr m\}/g, "<em>Melee Attack:</em>")
+                .replace(/\{@atkr r\}/g, "<em>Ranged Attack:</em>")
+                .replace(/\{@actSave ([^}]+)\}/g, (_, ability) => {
+                    const abilityNames = { str: "Strength", dex: "Dexterity", con: "Constitution", int: "Intelligence", wis: "Wisdom", cha: "Charisma" };
+                    return `<em>${abilityNames[ability] || ability} Saving Throw:</em>`;
+                })
+                .replace(/\{@actSaveFail\}/g, "<em>Failure:</em>")
+                .replace(/\{@actSaveSuccess\}/g, "<em>Success:</em>")
+                .replace(/\{@recharge\s?([^}]+)?\}/g, "(Recharge $1)")
+                .replace(/\{@dice ([^}]+)\}/g, "<strong>$1</strong>") // Destaca os dados ex: 1d4+4
+                .replace(/\{@[a-zA-Z]+\s([^}|]+)(?:\|[^}]+)?\}/g, "$1"); // Limpa @spell, @condition, @item...
+        };
+
+        function renderInlineValue(value) {
+            if (value === null || value === undefined) return "";
+            if (typeof value === "string" || typeof value === "number") return cleanTags(String(value));
+            if (Array.isArray(value)) return value.map(renderInlineValue).filter(Boolean).join(" ");
+            if (typeof value !== "object") return "";
+
+            if (value.name && value.entries) {
+                return `<strong>${cleanTags(value.name)}.</strong> ${renderInlineValue(value.entries)}`;
+            }
+            if (value.entries) return renderInlineValue(value.entries);
+            if (value.items) return renderInlineValue(value.items);
+            if (value.number !== undefined) {
+                return `${value.number}${value.condition ? ` ${cleanTags(value.condition)}` : ""}`;
+            }
+            return Object.values(value).map(renderInlineValue).filter(Boolean).join(" ");
+        }
+
+        const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+        // ---------------------------------------------------------
+        // RENDERIZADOR AVANÇADO DE TEXTO (Para listas e tabelas)
+        // ---------------------------------------------------------
+        function renderEntries(entriesArray) {
+            if (!entriesArray || !Array.isArray(entriesArray)) return "";
+            let html = "";
+
+            entriesArray.forEach(entry => {
+                if (typeof entry === 'string') {
+                    html += `<p>${cleanTags(entry)}</p>`;
+                } else if (typeof entry === 'object') {
+                    
+                    // É um subtítulo com parágrafos dentro
+                    if (entry.name && entry.type === 'entries') {
+                        html += `<div class="section-title" style="font-size:18px; border-bottom:none;">${cleanTags(entry.name)}</div>`;
+                        html += renderEntries(entry.entries);
+                    }
+                    
+                    // É uma lista (Bullet points)
+                    else if (entry.type === 'list') {
+                        html += `<ul>`;
+                        entry.items.forEach(item => {
+                            html += `<li>${renderInlineValue(item)}</li>`;
+                        });
+                        html += `</ul>`;
+                    }
+                    
+                    // É uma Tabela
+                    else if (entry.type === 'table') {
+                        html += `<table class="abilities" style="margin-top: 15px;">`;
+                        if (entry.caption) html += `<caption><strong>${entry.caption}</strong></caption>`;
+                        if (entry.colLabels) {
+                            html += `<tr>${entry.colLabels.map(label => `<th>${renderInlineValue(label)}</th>`).join("")}</tr>`;
+                        }
+                        entry.rows.forEach(row => {
+                            html += `<tr>${row.map(cell => `<td>${renderInlineValue(cell)}</td>`).join("")}</tr>`;
+                        });
+                        html += `</table>`;
+                    }
+                }
+            });
+            return html;
+        }
+
+
+        // ---------------------------------------------------------
+        // RENDERIZADOR DE ITENS MÁGICOS E EQUIPAMENTOS
+        // ---------------------------------------------------------
+        function renderItemStatblock(json) {
+            const typeName = json.wondrous ? "Wondrous item" : (json.type || "Item");
+            const rarity = json.rarity ? capitalize(json.rarity) : "Mundane";
+            const attunement = json.reqAttune ? " (requires attunement)" : "";
+            
+            let html = `
+            <div class="monster-card" style="border-top-color: #3b5b82; border-bottom-color: #3b5b82;">
+                <h1 style="color: #2c425e;">${json.name}</h1>
+                <div class="subtitle">${typeName}, ${rarity}${attunement}</div>
+                <hr class="red-line" style="background: #2c425e;">
+            `;
+
+            const meta = [];
+            if (json.weight) meta.push(`<span class="label">Weight:</span> ${json.weight} lb.`);
+            if (json.value) meta.push(`<span class="label">Value:</span> ${json.value / 100} gp`); // O valor geralmente vem em CP no 5etools, divide por 100 para GP
+            if (json.charges) meta.push(`<span class="label">Charges:</span> ${json.charges} (Regains ${cleanTags(json.rechargeAmount)})`);
+            
+            if (meta.length > 0) {
+                html += `<div class="stats-line">${meta.join(" | ")}</div><hr class="red-line" style="background: #2c425e;">`;
+            }
+
+            // Renderiza a descrição do item
+            html += renderEntries(json.entries);
+
+            html += `</div>`;
+            return html;
+        }
+
+
+        // ---------------------------------------------------------
+        // RENDERIZADOR DE MONSTROS (Atualizado)
+        // ---------------------------------------------------------
+        function renderMonsterStatblock(json) {
+            const getMod = (score) => { const mod = Math.floor((score - 10) / 2); return mod >= 0 ? `+${mod}` : mod; };
+            
+            const sizeMap = { "T": "Tiny", "S": "Small", "M": "Medium", "L": "Large", "H": "Huge", "G": "Gargantuan" };
+            const size = sizeMap[json.size[0]] || "Medium";
+            let type = typeof json.type === 'string' ? json.type : json.type.type;
+            if (json.type.tags) type += ` (${json.type.tags.join(", ")})`;
+            const alignMap = { "U": "Unaligned", "L": "Lawful", "C": "Chaotic", "E": "Evil", "G": "Good", "N": "Neutral" };
+            const align = json.alignment.map(a => alignMap[a] || a).join(" ") || "Unaligned";
+            const subtitle = `${size} ${type}, ${align}`.toLowerCase();
+            
+            const ac = typeof json.ac[0] === 'number' ? json.ac[0] : json.ac[0].ac;
+            const formatSpeed = (speed) => Object.entries(speed || {}).filter(([key]) => key !== "canHover").map(([key, value]) => {
+                const formattedValue = typeof value === "object" ? renderInlineValue(value) : value;
+                const distanceUnit = typeof value === "number" || (value && value.number !== undefined) ? " ft." : "";
+                return `${key !== 'walk' ? key + ' ' : ''}${formattedValue}${distanceUnit}`;
+            }).join(", ");
+            const formatChallenge = (challenge) => typeof challenge === "object" ? challenge.cr || "Unknown" : challenge;
+
+            let html = `
+            <div class="monster-card">
+                <h1>${json.name}</h1>
+                <div class="subtitle">${capitalize(subtitle)}</div>
+                <hr class="red-line">
+                
+                <div class="stats-line"><span class="label">Armor Class</span> ${ac}</div>
+                <div class="stats-line"><span class="label">Hit Points</span> ${json.hp.average} (${json.hp.formula})</div>
+                <div class="stats-line"><span class="label">Speed</span> ${formatSpeed(json.speed)}</div>
+                
+                <hr class="red-line">
+                <table class="abilities">
+                    <tr><th>STR</th><th>DEX</th><th>CON</th><th>INT</th><th>WIS</th><th>CHA</th></tr>
+                    <tr>
+                        <td>${json.str} (${getMod(json.str)})</td>
+                        <td>${json.dex} (${getMod(json.dex)})</td>
+                        <td>${json.con} (${getMod(json.con)})</td>
+                        <td>${json.int} (${getMod(json.int)})</td>
+                        <td>${json.wis} (${getMod(json.wis)})</td>
+                        <td>${json.cha} (${getMod(json.cha)})</td>
+                    </tr>
+                </table>
+                <hr class="red-line">
+            `;
+
+            if (json.save) html += `<div class="stats-line"><span class="label">Saving Throws</span> ${Object.entries(json.save).map(([k, v]) => `${capitalize(k)}${v}`).join(", ")}</div>`;
+            if (json.skill) html += `<div class="stats-line"><span class="label">Skills</span> ${Object.entries(json.skill).map(([k, v]) => `${capitalize(k)}${v}`).join(", ")}</div>`;
+            
+            if (json.vulnerable) html += `<div class="stats-line"><span class="label">Damage Vulnerabilities</span> ${json.vulnerable.join(", ")}</div>`;
+            if (json.resist) html += `<div class="stats-line"><span class="label">Damage Resistances</span> ${json.resist.join(", ")}</div>`;
+            if (json.immune) html += `<div class="stats-line"><span class="label">Damage Immunities</span> ${json.immune.join(", ")}</div>`;
+            if (json.conditionImmune) html += `<div class="stats-line"><span class="label">Condition Immunities</span> ${json.conditionImmune.join(", ")}</div>`;
+            
+            if (json.senses) html += `<div class="stats-line"><span class="label">Senses</span> ${json.senses.join(", ")}, passive Perception ${json.passive}</div>`;
+            html += `<div class="stats-line"><span class="label">Languages</span> ${json.languages ? json.languages.join(", ") : "—"}</div>`;
+            if (json.cr) html += `<div class="stats-line"><span class="challenge">Challenge</span> ${formatChallenge(json.cr)}</div>`;
+
+            html += `<hr class="red-line">`;
+
+            // Processa ações usando as novas funções
+            const renderActionSection = (title, dataArray) => {
+                if (!dataArray || dataArray.length === 0) return "";
+                let secHtml = title ? `<div class="section-title">${title}</div>` : "";
+                dataArray.forEach(item => {
+                    secHtml += `<p><span class="trait-title">${item.name}.</span> ${renderEntries(item.entries)}</p>`;
+                });
+                return secHtml;
+            };
+
+            html += renderActionSection(null, json.trait);
+            html += renderActionSection("Actions", json.action);
+            html += renderActionSection("Bonus Actions", json.bonus);
+            html += renderActionSection("Reactions", json.reaction);
+            
+            if (json.legendary) {
+                html += `<div class="section-title">Legendary Actions</div><p>The monster can take 3 legendary actions.</p>`;
+                html += renderActionSection(null, json.legendary);
+            }
+
+            html += `</div>`;
+            return html;
+        }
+
+        // ---------------------------------------------------------
+        // RENDERIZADOR DE OUTROS (Mecânicas genéricas)
+        // ---------------------------------------------------------
+        function renderGenericArticle(json) {
+            return `
+            <div class="info-container">
+                <h2 class="info-title">${json.name || "Desconhecido"}</h2>
+                ${renderEntries(json.entries)}
+            </div>`;
+        }
+    </script>
+</body>
+</html>
