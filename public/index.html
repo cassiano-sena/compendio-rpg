@@ -201,7 +201,7 @@
         <!-- Lista Dinâmica -->
         <div class="item-list-sidebar">
             <div class="list-header" id="dynamic-list-title">Lista</div>
-            <button class="session-back" id="session-back" type="button" onclick="navigateCategory('session')">← Todas as sessões</button>
+            <button class="session-back" id="session-back" type="button" onclick="goBackToList()">← Lista anterior</button>
             <div class="item-list-scroll">
                 <ul class="item-list" id="dynamic-item-list"></ul>
             </div>
@@ -216,19 +216,22 @@
          ------------------------------------------- -->
     <script>
         let currentCategory = 'monsters';
+        let currentListView = null;
 
         // Iniciar App
         function initCompendium() {
             navigateCategory('monsters', document.querySelector('.nav-item[data-cat="monsters"]'));
         }
 
-        function renderList(items, listTitle, collection, autoLoad = true) {
+        function renderList(items, listTitle, collection, autoLoad = true, parentView = null) {
             const listContainer = document.getElementById('dynamic-item-list');
             const displayArea = document.getElementById('dynamic-display-area');
             const backButton = document.getElementById('session-back');
+            const listView = { items, listTitle, collection, parentView };
+            currentListView = listView;
             listContainer.innerHTML = '';
             document.getElementById('dynamic-list-title').textContent = listTitle;
-            backButton.style.display = collection !== compendioData[currentCategory] ? 'block' : 'none';
+            backButton.style.display = parentView ? 'block' : 'none';
 
             let firstItemKey = null;
             let firstElement = null;
@@ -241,7 +244,7 @@
                 li.textContent = data.title;
                 li.onclick = function() {
                     if (data.children) {
-                        renderList(data.children, data.title, data.children, true);
+                        renderList(data.children, data.title, data.children, true, listView);
                         return;
                     }
                     loadItem(key, this, collection);
@@ -254,13 +257,20 @@
             if (firstItemKey) {
                 const firstItem = items[firstItemKey];
                 if (firstItem.children && autoLoad) {
-                    renderList(firstItem.children, firstItem.title, firstItem.children);
+                    renderList(firstItem.children, firstItem.title, firstItem.children, true, listView);
                 } else if (!firstItem.children) {
                     loadItem(firstItemKey, firstElement, collection);
                 }
             } else {
                 displayArea.innerHTML = '<div class="info-container"><h2 class="info-title">Nenhum Registo</h2><p class="info-text">Adicione ficheiros a esta categoria no dados.js.</p></div>';
             }
+        }
+
+        function goBackToList() {
+            if (!currentListView || !currentListView.parentView) return;
+
+            const parentView = currentListView.parentView;
+            renderList(parentView.items, parentView.listTitle, parentView.collection, false, parentView.parentView);
         }
 
         // Trocar Categoria

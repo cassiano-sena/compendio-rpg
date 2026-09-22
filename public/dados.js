@@ -10,60 +10,65 @@ const compendioData = {
             tipo: "json",
             path: "./monster/data/froghemoth/froghemoth.json",
         },
-        "alpha_werewolf": {
-            title: "Lobisomem Alfa",
-            tipo: "json",
-            path: "./monster/data/alpha-werewolf/alpha-werewolf.json"
-        },
-        "werewolf": {
-            title: "Lobisomem",
-            tipo: "json",
-            path: "./monster/data/werewolf/werewolf.json"
-        },
-        "wereboar": {
-            title: "Javali-homem",
-            tipo: "json",
-            path: "./monster/data/wereboar/wereboar.json"
-        },
-        "weretiger": {
-            title: "Tigre-homem",
-            tipo: "json",
-            path: "./monster/data/weretiger/weretiger.json"
-        },
-        "wererat": {
-            title: "Rato-homem",
-            tipo: "json",
-            path: "./monster/data/wererat/wererat.json"
-        },
-        "werebear": {
-            title: "Urso-homem",
-            tipo: "json",
-            path: "./monster/data/werebear/werebear.json"
-        },
-        "werevulture": {
-            title: "Abutre-homem",
-            tipo: "json",
-            path: "./monster/data/werevulture/werevulture.json"
-        },
-        "werejaguar": {
-            title: "Jaguar-homem",
-            tipo: "json",
-            path: "./monster/data/werejaguar/werejaguar.json"
-        },
-        "wereraven": {
-            title: "Corvo-homem",
-            tipo: "json",
-            path: "./monster/data/wereraven/wereraven.json"
-        },
-        "wereraven": {
-            title: "Jovem Corvo-homem",
-            tipo: "json",
-            path: "./monster/data/young-wereraven/young-wereraven.json"
-        },
-        "werewyvern": {
-            title: "Wyvern-homem",
-            tipo: "json",
-            path: "./monster/data/werewyvern/werewyvern.json",
+        "shapeshifters": {
+            title: "Shapeshifters",
+            children: {
+                "alpha_werewolf": {
+                    title: "Lobisomem Alfa",
+                    tipo: "json",
+                    path: "./monster/data/alpha-werewolf/alpha-werewolf.json"
+                },
+                "werewolf": {
+                    title: "Lobisomem",
+                    tipo: "json",
+                    path: "./monster/data/werewolf/werewolf.json"
+                },
+                "wereboar": {
+                    title: "Javali-homem",
+                    tipo: "json",
+                    path: "./monster/data/wereboar/wereboar.json"
+                },
+                "weretiger": {
+                    title: "Tigre-homem",
+                    tipo: "json",
+                    path: "./monster/data/weretiger/weretiger.json"
+                },
+                "wererat": {
+                    title: "Rato-homem",
+                    tipo: "json",
+                    path: "./monster/data/wererat/wererat.json"
+                },
+                "werebear": {
+                    title: "Urso-homem",
+                    tipo: "json",
+                    path: "./monster/data/werebear/werebear.json"
+                },
+                "werevulture": {
+                    title: "Abutre-homem",
+                    tipo: "json",
+                    path: "./monster/data/werevulture/werevulture.json"
+                },
+                "werejaguar": {
+                    title: "Jaguar-homem",
+                    tipo: "json",
+                    path: "./monster/data/werejaguar/werejaguar.json"
+                },
+                "wereraven": {
+                    title: "Corvo-homem",
+                    tipo: "json",
+                    path: "./monster/data/wereraven/wereraven.json"
+                },
+                "wereraven": {
+                    title: "Jovem Corvo-homem",
+                    tipo: "json",
+                    path: "./monster/data/young-wereraven/young-wereraven.json"
+                },
+                "werewyvern": {
+                    title: "Wyvern-homem",
+                    tipo: "json",
+                    path: "./monster/data/werewyvern/werewyvern.json",
+                },
+            },
         },
         "vampire_spawn": {
             title: "Cria de Vampiro",
@@ -77,7 +82,6 @@ const compendioData = {
         },
         "mothman": {
             title: "Homem Mariposa",
-            tipo: "html",
             path: "./monster/data/mothman/mothman.html"
         },
         "tarrasque": {
@@ -132,24 +136,102 @@ const compendioData = {
     },
     // CATEGORIA: MAPAS
     maps: {
-        "krynn": {
-            title: "Krynn",
-            path: "./map/varhen-masion/Varhen_Mansion_UpperFloor.png"
-        },
-        "mansion": {
-            title: "Mansão Varhen",
-            path: "./map/varhen-masion/Varhen_Mansion_LowerFloor.png"
-        },
-        "village": {
-            title: "Vila Varhen",
-            path: "./map/varhen-village/Varhen_Village.png"
+        "mansion":{
+            title: "Refúgio Varhen",
+            children:{
+                "krynn": {
+                    title: "Krynn",
+                    tipo: "png",
+                    path: "./map/varhen-masion/Varhen_Mansion_UpperFloor.png"
+                },
+                "village": {
+                    title: "Vila Varhen",
+                    tipo: "png",
+                    path: "./map/varhen-village/Varhen_Village.png"
+                },
+                "upper-mansion": {
+                    title: "Mansão Varhen (Andar Superior)",
+                    tipo: "png",
+                    path: "./map/varhen-masion/Varhen_Mansion_UpperFloor.png"
+                },
+                "lower-mansion": {
+                    title: "Mansão Varhen (Andar Inferior)",
+                    tipo: "png",
+                    path: "./map/varhen-masion/Varhen_Mansion_LowerFloor.png"
+                },
+                "raid": {
+                    title: "Zona de Conflito",
+                    tipo: "png",
+                    path: "./map/varhen-masion/Varhen_Mansion_LowerFloor.png"
+                },
+            },
         },
     },
     // CATEGORIA: ITENS
     items: {
-        "la-espada": {
-            title: "La Espada",
-            path: "./item/la-espada/la-espada.html"
+        "consumables":{
+            title: "Consumíveis",
+            children: {
+                "healing-potion":{
+                    title: "Poção de Cura",
+                    tipo: "json",
+                    path: "",
+                },
+                "greater-healing-potion":{
+                    title: "Grande Poção de Cura",
+                    tipo: "json",
+                    path: "",
+                },
+                "supreme-healing-potion":{
+                    title: "Poção de Cura Suprema",
+                    tipo: "json",
+                    path: "",
+                },
+            },
+        },
+        "armor":{
+            title: "Armaduras",
+            children: {
+                "mithral-armor": {
+                    title: "Armadura de Mitral",
+                    tipo: "json",
+                    path: "./item/mithral-armor/mithral-armor.json",
+                },
+            },
+        },
+        "weapons":{
+            title: "Armas",
+            children: {
+                "la-espada": {
+                    title: "La Espada",
+                    path: "./item/la-espada/la-espada.html"
+                },
+                "moon-sickle": {
+                    title: "Ceifa da Lua",
+                    tipo: "json",
+                    path: "./item/moon-sickle/moon-sickle.json"
+                },
+            },
+        },
+        "wondrous-items":{
+            title: "Itens Maravilhosos",
+            children: {
+                "luckstone": {
+                    title: "Pedra da Sorte",
+                    tipo: "json",
+                    path: "./item/luckstone/luckstone.json"
+                },
+                "fdd": {
+                    title: "Fate Dealer's Deck",
+                    tipo: "json",
+                    path: "./item/fdd/fdd.json"
+                },
+                "rmd": {
+                    title: "Bumbo do Orquestrador",
+                    tipo: "json",
+                    path: "./item/rmd/rmd.json"
+                },
+            },
         },
     },
     session: {
@@ -157,7 +239,7 @@ const compendioData = {
             title: "Casa Varhen",
             children: {
                 "prologo": {
-                    title: "Prólogo",
+                    title: "Prólogo",    
                     path: "./session/casa-varhen/prologo.html"
                 },
                 "ato1": {
