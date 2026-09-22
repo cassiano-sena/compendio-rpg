@@ -151,5 +151,32 @@ const compendioData = {
             title: "La Espada",
             path: "./item/la-espada/la-espada.html"
         },
+    },
+    session: {
+        "casa-varhen": {
+            title: "Casa Varhen",
+            children: {
+                "prologo": {
+                    title: "Prólogo",
+                    path: "./session/casa-varhen/prologo.html"
+                },
+                "ato1": {
+                    title: "Ato 1 · A Ilusão de Poder",
+                    path: "./session/casa-varhen/ato1.html"
+                },
+                "ato2": {
+                    title: "Ato 2 · O Sino e o Carniceiro",
+                    path: "./session/casa-varhen/ato2.html"
+                },
+                "ato3": {
+                    title: "Ato 3 · O Labirinto do Arauto",
+                    path: "./session/casa-varhen/ato3.html"
+                },
+                "epilogo": {
+                    title: "Epílogo · Batalha Kaiju",
+                    path: "./session/casa-varhen/epilogo.html"
+                }
+            }
+        },
     }
 };

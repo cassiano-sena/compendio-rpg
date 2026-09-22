@@ -78,6 +78,9 @@
     }
 
     .list-header { padding: 15px; font-size: 14px; color: #888; border-bottom: 1px solid var(--border-color); background: #111; text-transform: uppercase; letter-spacing: 1px; }
+
+    .session-back { display: none; width: 100%; padding: 9px 15px; border: 0; border-bottom: 1px solid var(--border-color); background: #171717; color: var(--accent-gold); text-align: left; cursor: pointer; font-size: 13px; }
+    .session-back:hover { background: #2a2a2a; }
     
     .item-list-scroll { flex: 1; overflow-y: auto; }
     .item-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
@@ -198,6 +201,7 @@
         <!-- Lista Dinâmica -->
         <div class="item-list-sidebar">
             <div class="list-header" id="dynamic-list-title">Lista</div>
+            <button class="session-back" id="session-back" type="button" onclick="navigateCategory('session')">← Todas as sessões</button>
             <div class="item-list-scroll">
                 <ul class="item-list" id="dynamic-item-list"></ul>
             </div>
@@ -218,44 +222,63 @@
             navigateCategory('monsters', document.querySelector('.nav-item[data-cat="monsters"]'));
         }
 
+        function renderList(items, listTitle, collection, autoLoad = true) {
+            const listContainer = document.getElementById('dynamic-item-list');
+            const displayArea = document.getElementById('dynamic-display-area');
+            const backButton = document.getElementById('session-back');
+            listContainer.innerHTML = '';
+            document.getElementById('dynamic-list-title').textContent = listTitle;
+            backButton.style.display = collection !== compendioData[currentCategory] ? 'block' : 'none';
+
+            let firstItemKey = null;
+            let firstElement = null;
+
+            for (const [key, data] of Object.entries(items)) {
+                if (!firstItemKey) firstItemKey = key;
+
+                const li = document.createElement('li');
+                li.className = 'list-item';
+                li.textContent = data.title;
+                li.onclick = function() {
+                    if (data.children) {
+                        renderList(data.children, data.title, data.children, true);
+                        return;
+                    }
+                    loadItem(key, this, collection);
+                };
+                listContainer.appendChild(li);
+
+                if (!firstElement) firstElement = li;
+            }
+
+            if (firstItemKey) {
+                const firstItem = items[firstItemKey];
+                if (firstItem.children && autoLoad) {
+                    renderList(firstItem.children, firstItem.title, firstItem.children);
+                } else if (!firstItem.children) {
+                    loadItem(firstItemKey, firstElement, collection);
+                }
+            } else {
+                displayArea.innerHTML = '<div class="info-container"><h2 class="info-title">Nenhum Registo</h2><p class="info-text">Adicione ficheiros a esta categoria no dados.js.</p></div>';
+            }
+        }
+
         // Trocar Categoria
         function navigateCategory(categoryName, element) {
             document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
             if(element) element.classList.add('active');
             
             currentCategory = categoryName;
-            document.getElementById('dynamic-list-title').textContent = "Lista de " + categoryName;
-            
-            const listContainer = document.getElementById('dynamic-item-list');
             const displayArea = document.getElementById('dynamic-display-area');
-            listContainer.innerHTML = ''; 
-
             const items = compendioData[categoryName];
 
             if (!items || Object.keys(items).length === 0) {
-                listContainer.innerHTML = '<li class="list-item" style="color:#666; cursor:default;">Vazio</li>';
+                document.getElementById('dynamic-item-list').innerHTML = '<li class="list-item" style="color:#666; cursor:default;">Vazio</li>';
                 displayArea.innerHTML = '<div class="info-container"><h2 class="info-title">Nenhum Registo</h2><p class="info-text">Adicione ficheiros a esta categoria no dados.js.</p></div>';
                 return;
             }
 
-            let firstItemKey = null;
-            let firstElement = null;
-
-            for (const [key, data] of Object.entries(items)) {
-                if (!firstItemKey) firstItemKey = key; 
-                
-                const li = document.createElement('li');
-                li.className = 'list-item';
-                li.textContent = data.title;
-                li.onclick = function() { loadItem(key, this); };
-                listContainer.appendChild(li);
-                
-                if(!firstElement) firstElement = li;
-            }
-
-            if (firstItemKey) {
-                loadItem(firstItemKey, firstElement);
-            }
+            renderList(items, categoryName === 'session' ? 'Lista de Sessões' : 'Lista de ' + categoryName, items, false);
         }
 
         // Lógica dos Botões das Abas (Dentro do ficheiro injetado)
@@ -422,13 +445,13 @@
             throw new Error(`Não foi possível interpretar o JSON de ${path}. Verifique a sintaxe e o conteúdo do arquivo.`);
         }
 
-        async function loadItem(itemKey, element) {
+        async function loadItem(itemKey, element, collection = compendioData[currentCategory]) {
             const parentList = element.closest('.item-list');
             parentList.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
 
             const displayArea = document.getElementById('dynamic-display-area');
-            const itemData = compendioData[currentCategory][itemKey];
+            const itemData = collection[itemKey];
 
             try {
                 displayArea.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;">Decifrando runas...</div>';
