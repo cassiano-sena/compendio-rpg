@@ -58,7 +58,7 @@ const compendioData = {
                     tipo: "json",
                     path: "./monster/data/wereraven/wereraven.json"
                 },
-                "wereraven": {
+                "young_wereraven": {
                     title: "Jovem Corvo-homem",
                     tipo: "json",
                     path: "./monster/data/young-wereraven/young-wereraven.json"
@@ -142,7 +142,7 @@ const compendioData = {
                 "krynn": {
                     title: "Krynn",
                     tipo: "png",
-                    path: "./map/varhen-masion/Varhen_Mansion_UpperFloor.png"
+                    path: "./map/varhen-mansion/Varhen_Mansion_UpperFloor.png"
                 },
                 "village": {
                     title: "Vila Varhen",
@@ -152,17 +152,17 @@ const compendioData = {
                 "upper-mansion": {
                     title: "Mansão Varhen (Andar Superior)",
                     tipo: "png",
-                    path: "./map/varhen-masion/Varhen_Mansion_UpperFloor.png"
+                    path: "./map/varhen-mansion/Varhen_Mansion_UpperFloor.png"
                 },
                 "lower-mansion": {
                     title: "Mansão Varhen (Andar Inferior)",
                     tipo: "png",
-                    path: "./map/varhen-masion/Varhen_Mansion_LowerFloor.png"
+                    path: "./map/varhen-mansion/Varhen_Mansion_LowerFloor.png"
                 },
                 "raid": {
                     title: "Zona de Conflito",
                     tipo: "png",
-                    path: "./map/varhen-masion/Varhen_Mansion_LowerFloor.png"
+                    path: "./map/varhen-mansion/Varhen_Mansion_LowerFloor.png"
                 },
             },
         },
@@ -234,6 +234,7 @@ const compendioData = {
             },
         },
     },
+    curio: {},
     session: {
         "casa-varhen": {
             title: "Casa Varhen",

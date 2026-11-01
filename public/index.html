@@ -19,8 +19,10 @@
         --border-color: #333;
         --text-light: #dcdcdc;
         --accent-gold: #d49a37;
+        --accent-gold-hover: #e5ae4d;
         --tab-bg: #2a2a2a;
         --tab-active-border: #ffffff;
+        --danger-red: #9c3028;
     }
 
     * {
@@ -42,7 +44,7 @@
        LAYOUT PRINCIPAL (PC)
        ------------------------------------------- */
     .sidebar { 
-        width: 220px; 
+        width: 230px; 
         flex-shrink: 0; 
         background-color: var(--bg-panel); 
         border-right: 1px solid var(--border-color); 
@@ -52,8 +54,8 @@
     }
     
     .sidebar-header { 
-        padding: 20px; 
-        font-size: 18px; 
+        padding: 18px 15px; 
+        font-size: 17px; 
         font-weight: bold; 
         color: var(--accent-gold); 
         border-bottom: 1px solid var(--border-color); 
@@ -62,14 +64,86 @@
         text-align: center;
     }
 
-    .nav-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
-    .nav-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background 0.2s; }
+    .sidebar-cta {
+        padding: 12px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-new-page {
+        width: 100%;
+        padding: 11px 14px;
+        background: linear-gradient(135deg, #d49a37, #b57c1e);
+        color: #111;
+        font-weight: bold;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+        transition: transform 0.15s, filter 0.15s;
+    }
+    .btn-new-page:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+    }
+
+    .nav-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; flex: 1; overflow-y: auto; }
+    .nav-item { padding: 14px 20px; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background 0.2s; }
     .nav-item:hover, .nav-item.active { background-color: #333; color: var(--accent-gold); border-left: 4px solid var(--accent-gold); padding-left: 16px; }
+
+    .sidebar-footer {
+        padding: 12px;
+        border-top: 1px solid var(--border-color);
+        background: #171717;
+        font-size: 12px;
+        color: #888;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .server-status {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+    }
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #888;
+        flex-shrink: 0;
+    }
+    .status-dot.online { background: #4caf50; box-shadow: 0 0 6px #4caf50; }
+    .status-dot.local { background: #f0ad4e; }
+    .backup-actions {
+        display: flex;
+        gap: 6px;
+    }
+    .btn-mini {
+        flex: 1;
+        background: #252525;
+        color: #bbb;
+        border: 1px solid #3a3a3a;
+        border-radius: 4px;
+        padding: 5px 6px;
+        font-size: 11px;
+        cursor: pointer;
+        text-align: center;
+    }
+    .btn-mini:hover { background: #333; color: #fff; border-color: var(--accent-gold); }
 
     .main-content { flex: 1; display: flex; flex-direction: row; overflow: hidden; }
 
     .item-list-sidebar { 
-        width: 250px; 
+        width: 260px; 
         flex-shrink: 0; 
         background-color: var(--bg-subpanel); 
         border-right: 1px solid var(--border-color); 
@@ -77,23 +151,95 @@
         flex-direction: column;
     }
 
-    .list-header { padding: 15px; font-size: 14px; color: #888; border-bottom: 1px solid var(--border-color); background: #111; text-transform: uppercase; letter-spacing: 1px; }
+    .list-header {
+        padding: 12px 15px;
+        font-size: 13px;
+        color: #999;
+        border-bottom: 1px solid var(--border-color);
+        background: #111;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-    .session-back { display: none; width: 100%; padding: 9px 15px; border: 0; border-bottom: 1px solid var(--border-color); background: #171717; color: var(--accent-gold); text-align: left; cursor: pointer; font-size: 13px; }
+    .search-box-wrap {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--border-color);
+        background: #141414;
+    }
+    .search-input {
+        width: 100%;
+        background: #222;
+        border: 1px solid #383838;
+        color: var(--text-light);
+        padding: 7px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        outline: none;
+    }
+    .search-input:focus { border-color: var(--accent-gold); }
+
+    .session-back { display: none; width: 100%; padding: 9px 15px; border: 0; border-bottom: 1px solid var(--border-color); background: #171717; color: var(--accent-gold); text-align: left; cursor: pointer; font-size: 13px; font-weight: bold; }
     .session-back:hover { background: #2a2a2a; }
     
     .item-list-scroll { flex: 1; overflow-y: auto; }
     .item-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
-    .list-item { padding: 12px 15px; font-size: 15px; cursor: pointer; border-bottom: 1px solid #222; transition: all 0.2s; }
+    .list-item {
+        padding: 12px 15px;
+        font-size: 15px;
+        cursor: pointer;
+        border-bottom: 1px solid #222;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
     .list-item:hover { background-color: #2a2a2a; }
     .list-item.active { background-color: var(--accent-gold); color: #000; font-weight: bold; }
+    .list-item-folder-badge {
+        font-size: 11px;
+        opacity: 0.75;
+        background: rgba(255,255,255,0.08);
+        padding: 2px 6px;
+        border-radius: 10px;
+    }
+    .list-item.active .list-item-folder-badge {
+        background: rgba(0,0,0,0.2);
+        color: #000;
+    }
 
-    .item-display-area { flex: 1; overflow-y: auto; padding: 30px; background-color: var(--bg-dark); }
+    .item-display-area { flex: 1; overflow-y: auto; padding: 25px 30px; background-color: var(--bg-dark); position: relative; }
+
+    /* Barra de Ações Rápidas da Página Atual */
+    .entry-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    .btn-action-bar {
+        background: #222;
+        color: #ccc;
+        border: 1px solid #3a3a3a;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.15s;
+    }
+    .btn-action-bar:hover { background: #333; color: #fff; border-color: var(--accent-gold); }
+    .btn-action-bar.danger:hover { background: var(--danger-red); color: #fff; border-color: #ff6b60; }
 
     /* -------------------------------------------
        SISTEMA DE ABAS (TABS)
        ------------------------------------------- */
-    .tabs-header { display: flex; gap: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tabs-header { display: flex; gap: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
     .tab-btn { background-color: transparent; color: #888; border: 1px solid transparent; padding: 8px 16px; font-size: 14px; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
     .tab-btn:hover { color: var(--text-light); background-color: var(--tab-bg); }
     .tab-btn.active { color: var(--text-light); border: 1px solid var(--tab-active-border); background-color: var(--tab-bg); }
@@ -114,7 +260,7 @@
     .resource-label { color: var(--accent-gold); font-size: 13px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
     .resource-audio { width: 100%; }
     
-    .images-container { display: flex; justify-content: center; align-items: center; padding: 20px 0; }
+    .images-container { display: flex; justify-content: center; align-items: center; padding: 20px 0; flex-direction: column; gap: 15px; }
     .full-artwork { max-width: 100%; max-height: 80vh; border: 2px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.8); border-radius: 8px; object-fit: contain; }
 
     .monster-card { flex: 1; width: 100%; max-width: 700px; padding: 16px 20px; background: linear-gradient(rgba(249, 239, 209, 0.94), rgba(249, 239, 209, 0.94)), repeating-linear-gradient(0deg, rgba(120, 90, 40, 0.04) 0, rgba(120, 90, 40, 0.04) 1px, transparent 1px, transparent 4px); border-top: 7px solid #b58212; border-bottom: 7px solid #b58212; box-shadow: 0 0 0 2px #222; font-family: Georgia, "Times New Roman", serif; color: #2b241b; word-wrap: break-word; }
@@ -139,15 +285,269 @@
     .info-title { color: var(--accent-gold); font-size: clamp(20px, 4vw, 24px); font-variant: small-caps; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
     .info-text { font-size: 16px; line-height: 1.6; color: var(--text-light); }
 
+    /* Visualizador de Mapas */
+    .map-viewer-card {
+        background: var(--bg-panel);
+        border: 1px solid var(--border-color);
+        border-top: 5px solid var(--accent-gold);
+        border-radius: 6px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .map-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .map-viewport {
+        overflow: auto;
+        max-height: 76vh;
+        background: #0c0c0c;
+        border: 1px solid #2a2a2a;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 10px;
+    }
+    .map-image {
+        max-width: 100%;
+        height: auto;
+        transition: width 0.2s ease;
+        border-radius: 4px;
+    }
+
+    /* -------------------------------------------
+       MODAL CRIADOR / EDITOR DE PÁGINAS (ESTÚDIO WEB)
+       ------------------------------------------- */
+    .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.82);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .studio-modal {
+        background: var(--bg-panel);
+        border: 1px solid #444;
+        border-top: 5px solid var(--accent-gold);
+        border-radius: 8px;
+        width: 100%;
+        max-width: 1280px;
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+        overflow: hidden;
+    }
+
+    .studio-header {
+        padding: 15px 22px;
+        background: #161616;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .studio-header h2 {
+        margin: 0;
+        color: var(--accent-gold);
+        font-size: 20px;
+        letter-spacing: 0.5px;
+    }
+    .btn-close-modal {
+        background: transparent;
+        border: 1px solid #444;
+        color: #aaa;
+        width: 34px;
+        height: 34px;
+        border-radius: 6px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .btn-close-modal:hover { background: #333; color: #fff; }
+
+    .studio-body {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        overflow: hidden;
+    }
+
+    .studio-form-pane {
+        padding: 20px 24px;
+        overflow-y: auto;
+        border-right: 1px solid var(--border-color);
+    }
+
+    .studio-preview-pane {
+        padding: 20px;
+        overflow-y: auto;
+        background: #111;
+    }
+
+    .studio-footer {
+        padding: 14px 24px;
+        background: #161616;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .mode-selector {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+    .mode-card {
+        background: #242424;
+        border: 1px solid #3a3a3a;
+        border-radius: 6px;
+        padding: 10px 8px;
+        text-align: center;
+        cursor: pointer;
+        color: #bbb;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.15s;
+    }
+    .mode-card:hover { background: #2e2e2e; color: #fff; }
+    .mode-card.active {
+        background: rgba(212, 154, 55, 0.16);
+        border-color: var(--accent-gold);
+        color: var(--accent-gold);
+    }
+
+    .form-section {
+        background: #181818;
+        border: 1px solid #2c2c2c;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 16px;
+    }
+    .form-section-title {
+        margin: 0 0 12px 0;
+        color: var(--accent-gold);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        border-bottom: 1px solid #2c2c2c;
+        padding-bottom: 6px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+    .form-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+    .form-grid-6 {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 8px;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+        font-size: 12px;
+        color: #aaa;
+        font-weight: 600;
+    }
+    .form-control {
+        background: #242424;
+        border: 1px solid #3c3c3c;
+        color: #eee;
+        padding: 8px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+    }
+    .form-control:focus { border-color: var(--accent-gold); }
+    textarea.form-control { resize: vertical; min-height: 75px; }
+    textarea.code-area {
+        font-family: Consolas, Monaco, monospace;
+        font-size: 12.5px;
+        min-height: 210px;
+    }
+
+    .dynamic-list-row {
+        display: grid;
+        grid-template-columns: 180px 1fr auto;
+        gap: 8px;
+        margin-bottom: 8px;
+        align-items: start;
+    }
+    .btn-add-row {
+        background: #262626;
+        color: var(--accent-gold);
+        border: 1px dashed var(--accent-gold);
+        padding: 7px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .btn-add-row:hover { background: rgba(212, 154, 55, 0.12); }
+
+    .btn-save-primary {
+        background: linear-gradient(135deg, #d49a37, #b57c1e);
+        color: #111;
+        border: none;
+        padding: 11px 24px;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .btn-save-primary:hover { filter: brightness(1.1); }
+
+    .toast-notification {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #222;
+        color: #fff;
+        border-left: 5px solid var(--accent-gold);
+        padding: 14px 20px;
+        border-radius: 6px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+        z-index: 2000;
+        display: none;
+        font-size: 14px;
+    }
 
     /* -------------------------------------------
        RESPONSIVIDADE MODO TABLET (< 1100px)
        ------------------------------------------- */
     @media (max-width: 1100px) {
-        /* Empilha o Token e a Ficha na área de visualização */
         .page-container { flex-direction: column; align-items: center; gap: 20px; }
         .token-container { position: static; margin-bottom: 10px; }
         .monster-card { max-width: 100%; }
+        .studio-body { grid-template-columns: 1fr; }
+        .studio-preview-pane { display: none; }
     }
 
     /* -------------------------------------------
@@ -156,14 +556,13 @@
     @media (max-width: 768px) {
         body { flex-direction: column; overflow-y: auto; }
 
-        /* Menu Principal (Sidebar) vira barra horizontal no topo */
-        .sidebar { width: 100%; flex-direction: row; border-right: none; border-bottom: 1px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .sidebar-header { display: none; } /* Oculta o título do Compêndio para ganhar espaço */
+        .sidebar { width: 100%; flex-direction: row; border-right: none; border-bottom: 1px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch; align-items: center; }
+        .sidebar-header, .sidebar-footer { display: none; }
+        .sidebar-cta { border-bottom: none; padding: 6px 10px; flex-shrink: 0; }
         .nav-list { flex-direction: row; width: max-content; }
-        .nav-item { border-bottom: none; border-left: none !important; border-right: 1px solid var(--border-color); text-align: center; white-space: nowrap; padding: 12px 20px; }
+        .nav-item { border-bottom: none; border-left: none !important; border-right: 1px solid var(--border-color); text-align: center; white-space: nowrap; padding: 12px 16px; }
         .nav-item.active { border-bottom: 3px solid var(--accent-gold); }
 
-        /* Sub-Menu (Lista de monstros) vira "Tags" deslizáveis */
         .main-content { flex-direction: column; overflow: visible; }
         .item-list-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); background: var(--bg-dark); }
         .list-header { display: none; }
@@ -172,12 +571,13 @@
         .item-list { flex-direction: row; gap: 10px; width: max-content; }
         .list-item { border: 1px solid var(--border-color); border-radius: 20px; padding: 8px 16px; }
 
-        /* Área de Exibição */
         .item-display-area { padding: 15px 10px; overflow-y: visible; }
         
-        /* Ajuste do Token no telemóvel */
         .token-image { width: 220px; height: 220px; border-width: 4px; }
         .resource-panel { width: min(320px, 100%); }
+        .mode-selector { grid-template-columns: repeat(2, 1fr); }
+        .form-grid, .form-grid-3, .form-grid-6 { grid-template-columns: 1fr 1fr; }
+        .dynamic-list-row { grid-template-columns: 1fr; }
     }
 </style>
 </head>
@@ -186,6 +586,13 @@
     <!-- BARRA LATERAL (Categorias) -->
     <aside class="sidebar">
         <div class="sidebar-header">Compêndio Épico</div>
+
+        <div class="sidebar-cta">
+            <button class="btn-new-page" type="button" onclick="openStudioModal()">
+                <span>＋</span> Nova Página
+            </button>
+        </div>
+
         <ul class="nav-list">
             <li class="nav-item active" data-cat="monsters" onclick="navigateCategory('monsters', this)">Monstros</li>
             <li class="nav-item" data-cat="npcs" onclick="navigateCategory('npcs', this)">NPCs</li>
@@ -194,22 +601,371 @@
             <li class="nav-item" data-cat="curio" onclick="navigateCategory('curio', this)">Curiosidades</li>
             <li class="nav-item" data-cat="session" onclick="navigateCategory('session', this)">Planos de Sessão</li>
         </ul>
+
+        <div class="sidebar-footer">
+            <div class="server-status" id="server-status-indicator">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">Verificando modo...</span>
+            </div>
+            <div class="backup-actions">
+                <button class="btn-mini" type="button" onclick="exportBackup()" title="Baixar cópia de segurança do compêndio">⬇ Backup</button>
+                <button class="btn-mini" type="button" onclick="document.getElementById('import-backup-input').click()" title="Restaurar cópia de segurança">⬆ Restaurar</button>
+                <input type="file" id="import-backup-input" accept=".json" style="display:none" onchange="importBackup(event)">
+            </div>
+        </div>
     </aside>
 
     <!-- ÁREA PRINCIPAL -->
     <main class="main-content">
         <!-- Lista Dinâmica -->
         <div class="item-list-sidebar">
-            <div class="list-header" id="dynamic-list-title">Lista</div>
-            <button class="session-back" id="session-back" type="button" onclick="goBackToList()">← Lista anterior</button>
+            <div class="list-header">
+                <span id="dynamic-list-title">Lista</span>
+                <button class="btn-mini" style="flex:0 0 auto; padding:3px 8px;" type="button" onclick="openStudioModal()" title="Adicionar página nesta categoria">＋ Adicionar</button>
+            </div>
+            <div class="search-box-wrap">
+                <input type="text" id="list-search-input" class="search-input" placeholder="🔍 Filtrar por nome..." oninput="filterCurrentList(this.value)">
+            </div>
+            <button class="session-back" id="session-back" type="button" onclick="goBackToList()">← Voltar para a pasta anterior</button>
             <div class="item-list-scroll">
                 <ul class="item-list" id="dynamic-item-list"></ul>
             </div>
         </div>
         
-        <!-- Onde a Ficha (HTML Externo) vai aparecer -->
+        <!-- Onde a Ficha (HTML Externo ou JSON) vai aparecer -->
         <div class="item-display-area" id="dynamic-display-area"></div>
     </main>
+
+    <!-- MODAL ESTÚDIO CRIADOR DE PÁGINAS -->
+    <div class="modal-backdrop" id="studio-modal-backdrop">
+        <div class="studio-modal">
+            <div class="studio-header">
+                <h2 id="studio-modal-title">✨ Adicionar Nova Página ao Compêndio</h2>
+                <button class="btn-close-modal" type="button" onclick="closeStudioModal()">✕</button>
+            </div>
+
+            <div class="studio-body">
+                <!-- Coluna Esquerda: Formulário -->
+                <div class="studio-form-pane">
+                    <!-- 1. Destino no Compêndio -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">1. Onde salvar no Compêndio?</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Categoria Principal</label>
+                                <select id="st-category" class="form-control" onchange="updateGroupSelector()">
+                                    <option value="monsters">Monstros</option>
+                                    <option value="npcs">NPCs</option>
+                                    <option value="items">Itens</option>
+                                    <option value="maps">Mapas</option>
+                                    <option value="curio">Curiosidades</option>
+                                    <option value="session">Planos de Sessão</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Pasta / Subcategoria (Opcional)</label>
+                                <select id="st-group" class="form-control" onchange="toggleNewGroupInput()">
+                                    <option value="">(Direto na raiz da categoria)</option>
+                                </select>
+                            </div>
+                            <div class="form-group full" id="st-new-group-wrap" style="display:none;">
+                                <label>Nome da Nova Pasta / Grupo</label>
+                                <input type="text" id="st-new-group-title" class="form-control" placeholder="Ex: Dragões, Consumíveis, Ato 1...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Escolha do Modo de Criação -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">2. Como você quer criar?</h3>
+                        <div class="mode-selector">
+                            <div class="mode-card active" data-mode="5etools" onclick="switchStudioMode('5etools')">📋 Colar JSON (5etools)</div>
+                            <div class="mode-card" data-mode="monster" onclick="switchStudioMode('monster')">🐉 Ficha de Monstro / NPC</div>
+                            <div class="mode-card" data-mode="item" onclick="switchStudioMode('item')">⚔️ Criar Item Mágico</div>
+                            <div class="mode-card" data-mode="article" onclick="switchStudioMode('article')">🗺️ Mapa / Sessão / Lore</div>
+                        </div>
+
+                        <!-- MODO A: COLAR JSON DO 5ETOOLS -->
+                        <div id="mode-pane-5etools" class="studio-mode-pane">
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label>Título na Lista Lateral (preenchido automaticamente ao colar o JSON)</label>
+                                    <input type="text" id="json-entry-title" class="form-control" placeholder="Ex: Lobisomem Alfa" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group full">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <label>Cole abaixo o JSON do 5etools (Monstro, Item, Magia...) ou envie um arquivo .json</label>
+                                        <div style="display:flex; gap:6px;">
+                                            <button type="button" class="btn-mini" onclick="document.getElementById('json-file-upload').click()">📂 Abrir arquivo .json</button>
+                                            <button type="button" class="btn-mini" onclick="loadSample5eJson()">✨ Testar Exemplo</button>
+                                            <button type="button" class="btn-mini" onclick="convertJsonToVisualForm()" title="Carrega os dados deste JSON no formulário visual para editar facilmente">✏️ Editar no Criador Visual</button>
+                                        </div>
+                                        <input type="file" id="json-file-upload" accept=".json" style="display:none" onchange="handleJsonFileUpload(event)">
+                                    </div>
+                                    <textarea id="json-raw-input" class="form-control code-area" placeholder='Cole o JSON aqui (ex: { "name": "Goblin", "size": ["S"], ... })' oninput="onRawJsonInput()"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Imagem de Token Opcional (.png / .jpg / .webp)</label>
+                                    <input type="file" id="json-token-file" class="form-control" accept="image/*" onchange="handleStudioImage(event, 'token')">
+                                </div>
+                                <div class="form-group">
+                                    <label>Arte Completa Opcional (.png / .jpg / .webp)</label>
+                                    <input type="file" id="json-art-file" class="form-control" accept="image/*" onchange="handleStudioImage(event, 'art')">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Lore / Informações Extras (Aba "Info" da ficha - opcional)</label>
+                                    <textarea id="json-lore-input" class="form-control" placeholder="Escreva a história, comportamento ou segredos desta criatura/item..." oninput="updateStudioPreview()"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODO B: CRIADOR VISUAL DE MONSTRO / NPC -->
+                        <div id="mode-pane-monster" class="studio-mode-pane" style="display:none;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Nome da Criatura / NPC</label>
+                                    <input type="text" id="vf-name" class="form-control" placeholder="Ex: Cavaleiro do Vazio" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tamanho</label>
+                                    <select id="vf-size" class="form-control" onchange="updateStudioPreview()">
+                                        <option value="T">Minúsculo (Tiny)</option>
+                                        <option value="S">Pequeno (Small)</option>
+                                        <option value="M" selected>Médio (Medium)</option>
+                                        <option value="L">Grande (Large)</option>
+                                        <option value="H">Enorme (Huge)</option>
+                                        <option value="G">Imenso (Gargantuan)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo / Raça / Classe</label>
+                                    <input type="text" id="vf-type" class="form-control" value="humanoid" placeholder="Ex: aberration, fiend, humanoid (elf)" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Alinhamento</label>
+                                    <input type="text" id="vf-align" class="form-control" value="Chaotic Neutral" placeholder="Ex: Lawful Evil, Neutral" oninput="updateStudioPreview()">
+                                </div>
+                            </div>
+
+                            <div class="form-grid-3" style="margin-top:12px;">
+                                <div class="form-group">
+                                    <label>Classe de Armadura (CA)</label>
+                                    <input type="text" id="vf-ac" class="form-control" value="18 (armadura natural)" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pontos de Vida (Média)</label>
+                                    <input type="number" id="vf-hp-avg" class="form-control" value="120" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Fórmula de PV</label>
+                                    <input type="text" id="vf-hp-form" class="form-control" value="16d8 + 48" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Deslocamento (Speed)</label>
+                                    <input type="text" id="vf-speed" class="form-control" value="9m (30 ft.)" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nível de Desafio (CR)</label>
+                                    <input type="text" id="vf-cr" class="form-control" value="10 (5,900 XP)" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Percepção Passiva</label>
+                                    <input type="number" id="vf-passive" class="form-control" value="15" oninput="updateStudioPreview()">
+                                </div>
+                            </div>
+
+                            <div style="margin-top:14px;">
+                                <label style="font-size:12px; color:#aaa; font-weight:600; display:block; margin-bottom:6px;">Atributos (STR, DEX, CON, INT, WIS, CHA)</label>
+                                <div class="form-grid-6">
+                                    <div class="form-group"><label>STR</label><input type="number" id="vf-str" class="form-control" value="18" oninput="updateStudioPreview()"></div>
+                                    <div class="form-group"><label>DEX</label><input type="number" id="vf-dex" class="form-control" value="14" oninput="updateStudioPreview()"></div>
+                                    <div class="form-group"><label>CON</label><input type="number" id="vf-con" class="form-control" value="16" oninput="updateStudioPreview()"></div>
+                                    <div class="form-group"><label>INT</label><input type="number" id="vf-int" class="form-control" value="12" oninput="updateStudioPreview()"></div>
+                                    <div class="form-group"><label>WIS</label><input type="number" id="vf-wis" class="form-control" value="14" oninput="updateStudioPreview()"></div>
+                                    <div class="form-group"><label>CHA</label><input type="number" id="vf-cha" class="form-control" value="16" oninput="updateStudioPreview()"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-grid" style="margin-top:12px;">
+                                <div class="form-group">
+                                    <label>Testes de Resistência (Saving Throws)</label>
+                                    <input type="text" id="vf-saves" class="form-control" placeholder="Ex: Str +8, Con +7, Wis +6" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Perícias (Skills)</label>
+                                    <input type="text" id="vf-skills" class="form-control" placeholder="Ex: Perception +6, Stealth +5" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Resistências a Dano</label>
+                                    <input type="text" id="vf-resist" class="form-control" placeholder="Ex: fire, necrotic" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Imunidades a Dano / Condição</label>
+                                    <input type="text" id="vf-immune" class="form-control" placeholder="Ex: poison, charmed, frightened" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sentidos</label>
+                                    <input type="text" id="vf-senses" class="form-control" value="darkvision 60 ft." oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Idiomas</label>
+                                    <input type="text" id="vf-langs" class="form-control" value="Comum, Abissal" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Imagem do Token (Opcional)</label>
+                                    <input type="file" class="form-control" accept="image/*" onchange="handleStudioImage(event, 'token')">
+                                </div>
+                                <div class="form-group">
+                                    <label>Arte Completa (Opcional)</label>
+                                    <input type="file" class="form-control" accept="image/*" onchange="handleStudioImage(event, 'art')">
+                                </div>
+                            </div>
+
+                            <!-- Habilidades Passivas (Traits) -->
+                            <div style="margin-top:16px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                    <label style="font-size:13px; color:var(--accent-gold); font-weight:bold;">Habilidades / Traços (Traits)</label>
+                                    <button type="button" class="btn-add-row" onclick="addDynamicRow('vf-traits-list', 'Ex: Regeneração', 'Recupera 10 PV no início do turno.')">＋ Adicionar Traço</button>
+                                </div>
+                                <div id="vf-traits-list"></div>
+                            </div>
+
+                            <!-- Ações -->
+                            <div style="margin-top:14px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                    <label style="font-size:13px; color:var(--accent-gold); font-weight:bold;">Ações (Actions)</label>
+                                    <button type="button" class="btn-add-row" onclick="addDynamicRow('vf-actions-list', 'Ex: Espada Longa', 'Ataque Corpo a Corpo: +8 para atingir, alcance 1,5m. Acerto: 12 (2d6 + 5) de dano cortante.')">＋ Adicionar Ação</button>
+                                </div>
+                                <div id="vf-actions-list"></div>
+                            </div>
+
+                            <!-- Reações & Ações Lendárias -->
+                            <div style="margin-top:14px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                    <label style="font-size:13px; color:var(--accent-gold); font-weight:bold;">Ações Lendárias (Opcional)</label>
+                                    <button type="button" class="btn-add-row" onclick="addDynamicRow('vf-legendary-list', 'Ex: Ataque Rápido', 'Realiza um ataque corpo a corpo.')">＋ Adicionar Ação Lendária</button>
+                                </div>
+                                <div id="vf-legendary-list"></div>
+                            </div>
+
+                            <div class="form-group full" style="margin-top:14px;">
+                                <label>Lore / História da Criatura ou NPC (Aparece na aba "Info")</label>
+                                <textarea id="vf-lore" class="form-control" placeholder="Descreva a origem, personalidade e segredos deste personagem..." oninput="updateStudioPreview()"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- MODO C: CRIADOR VISUAL DE ITEM -->
+                        <div id="mode-pane-item" class="studio-mode-pane" style="display:none;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Nome do Item</label>
+                                    <input type="text" id="vi-name" class="form-control" placeholder="Ex: Lâmina do Eclipse" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo de Item</label>
+                                    <input type="text" id="vi-type" class="form-control" value="Wondrous item" placeholder="Ex: Weapon (longsword), Armor, Potion" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Raridade</label>
+                                    <select id="vi-rarity" class="form-control" onchange="updateStudioPreview()">
+                                        <option value="common">Comum (Common)</option>
+                                        <option value="uncommon">Incomum (Uncommon)</option>
+                                        <option value="rare" selected>Raro (Rare)</option>
+                                        <option value="very rare">Muito Raro (Very Rare)</option>
+                                        <option value="legendary">Lendário (Legendary)</option>
+                                        <option value="artifact">Artefato (Artifact)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Sintonização (Attunement)</label>
+                                    <select id="vi-attune" class="form-control" onchange="updateStudioPreview()">
+                                        <option value="true">Sim (Requer Sintonização)</option>
+                                        <option value="false">Não</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso (lb) - Opcional</label>
+                                    <input type="number" id="vi-weight" class="form-control" placeholder="Ex: 3" oninput="updateStudioPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Imagem do Item (Opcional)</label>
+                                    <input type="file" class="form-control" accept="image/*" onchange="handleStudioImage(event, 'art')">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Descrição e Propriedades Mágicas (um parágrafo por linha)</label>
+                                    <textarea id="vi-desc" class="form-control" style="min-height:140px;" placeholder="Você recebe +2 nas jogadas de ataque e dano feitas com esta arma mágica.&#10;&#10;Olhar da Noite: Enquanto empunhar a espada, você possui visão no escuro de 18 metros." oninput="updateStudioPreview()"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODO D: MAPA / SESSÃO / ARTIGO LIVRE -->
+                        <div id="mode-pane-article" class="studio-mode-pane" style="display:none;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Tipo de Página</label>
+                                    <select id="va-subtype" class="form-control" onchange="toggleArticleSubtype()">
+                                        <option value="map">🗺️ Mapa (Imagem em Alta Resolução)</option>
+                                        <option value="session">📖 Plano de Sessão / Capítulo</option>
+                                        <option value="lore">📜 Artigo / Curiosidade / Lore</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Título da Página</label>
+                                    <input type="text" id="va-title" class="form-control" placeholder="Ex: Fortaleza de Kael / Ato 4" oninput="updateStudioPreview()">
+                                </div>
+
+                                <div class="form-group full" id="va-map-upload-group">
+                                    <label>Selecione a Imagem do Mapa ou Ilustração (.png, .jpg, .webp)</label>
+                                    <input type="file" class="form-control" accept="image/*" onchange="handleStudioImage(event, 'map')">
+                                </div>
+
+                                <div id="va-text-fields" class="form-group full" style="display:none;">
+                                    <div class="form-grid">
+                                        <div class="form-group full">
+                                            <label>Subtítulo / Resumo</label>
+                                            <input type="text" id="va-subtitle" class="form-control" placeholder="Uma breve frase sobre esta sessão ou curiosidade..." oninput="updateStudioPreview()">
+                                        </div>
+                                        <div class="form-group full">
+                                            <label>Texto Principal / História e Objetivos</label>
+                                            <textarea id="va-body" class="form-control" style="min-height:120px;" placeholder="Escreva os parágrafos principais..." oninput="updateStudioPreview()"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Cenas / Pontos Importantes (1 por linha)</label>
+                                            <textarea id="va-scenes" class="form-control" placeholder="Chegada na taverna&#10;O encontro com o informante&#10;Emboscada na ponte" oninput="updateStudioPreview()"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Segredos / Notas do Mestre / Encontros</label>
+                                            <textarea id="va-notes" class="form-control" placeholder="Anotações extras, monstros do encontro ou recompensas..." oninput="updateStudioPreview()"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Pré-visualização ao Vivo -->
+                <div class="studio-preview-pane">
+                    <div style="font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:12px;">
+                        👁️ Pré-visualização em Tempo Real
+                    </div>
+                    <div id="studio-live-preview"></div>
+                </div>
+            </div>
+
+            <div class="studio-footer">
+                <div style="font-size:12px; color:#999;" id="studio-footer-hint">
+                    Ao clicar em Salvar, a página aparecerá imediatamente no seu Compêndio.
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" class="btn-action-bar" onclick="closeStudioModal()">Cancelar</button>
+                    <button type="button" class="btn-save-primary" onclick="saveStudioEntry()">💾 Salvar no Compêndio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-notification" id="toast-notification"></div>
 
     <!-- -------------------------------------------
          SCRIPTS MESTRES DE LÓGICA E NAVEGAÇÃO
@@ -217,17 +973,95 @@
     <script>
         let currentCategory = 'monsters';
         let currentListView = null;
+        let activeItemContext = null; // { key, itemData, collection, groupKey }
+        let serverWritable = false;
+
+        // Estado do Estúdio de Criação
+        let studioMode = '5etools';
+        let studioImages = { token: null, art: null, map: null };
+        let editingExistingKey = null;
+
+        const STORAGE_KEY_DATA = 'compendio_rpg_custom_data_v1';
+        const STORAGE_KEY_FILES = 'compendio_rpg_virtual_files_v1';
+        let virtualFiles = {};
 
         // Iniciar App
-        function initCompendium() {
+        async function initCompendium() {
+            loadLocalPersistence();
+            await checkServerStatus();
+            setupDefaultVisualRows();
             navigateCategory('monsters', document.querySelector('.nav-item[data-cat="monsters"]'));
         }
 
-        function renderList(items, listTitle, collection, autoLoad = true, parentView = null) {
+        function showToast(msg) {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => { toast.style.display = 'none'; }, 3800);
+        }
+
+        function loadLocalPersistence() {
+            try {
+                const savedFiles = localStorage.getItem(STORAGE_KEY_FILES);
+                if (savedFiles) virtualFiles = JSON.parse(savedFiles) || {};
+
+                const savedData = localStorage.getItem(STORAGE_KEY_DATA);
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    for (const [cat, entries] of Object.entries(parsed)) {
+                        if (!compendioData[cat]) compendioData[cat] = {};
+                        for (const [k, v] of Object.entries(entries)) {
+                            if (v && v.children && compendioData[cat][k] && compendioData[cat][k].children) {
+                                Object.assign(compendioData[cat][k].children, v.children);
+                            } else {
+                                compendioData[cat][k] = v;
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Aviso ao ler cache local:', e);
+            }
+        }
+
+        function saveLocalPersistence() {
+            try {
+                localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(compendioData));
+                localStorage.setItem(STORAGE_KEY_FILES, JSON.stringify(virtualFiles));
+            } catch (e) {
+                console.warn('Cache local cheio ou indisponível:', e);
+            }
+        }
+
+        async function checkServerStatus() {
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('status-text');
+            try {
+                const res = await fetch('/api/status', { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.writable) {
+                        serverWritable = true;
+                        dot.className = 'status-dot online';
+                        text.textContent = 'Salvo automático no PC';
+                        return;
+                    }
+                }
+            } catch (e) {}
+            serverWritable = false;
+            dot.className = 'status-dot local';
+            text.textContent = 'Modo Navegador (Cache)';
+        }
+
+        function renderList(items, listTitle, collection, autoLoad = true, parentView = null, groupKey = '') {
             const listContainer = document.getElementById('dynamic-item-list');
             const displayArea = document.getElementById('dynamic-display-area');
             const backButton = document.getElementById('session-back');
-            const listView = { items, listTitle, collection, parentView };
+            const searchInput = document.getElementById('list-search-input');
+            if (searchInput) searchInput.value = '';
+
+            const listView = { items, listTitle, collection, parentView, groupKey };
             currentListView = listView;
             listContainer.innerHTML = '';
             document.getElementById('dynamic-list-title').textContent = listTitle;
@@ -237,17 +1071,30 @@
             let firstElement = null;
 
             for (const [key, data] of Object.entries(items)) {
+                if (!data) continue;
                 if (!firstItemKey) firstItemKey = key;
 
                 const li = document.createElement('li');
                 li.className = 'list-item';
-                li.textContent = data.title;
+                li.dataset.title = (data.title || key).toLowerCase();
+
+                const spanTitle = document.createElement('span');
+                spanTitle.textContent = data.title || key;
+                li.appendChild(spanTitle);
+
+                if (data.children) {
+                    const badge = document.createElement('span');
+                    badge.className = 'list-item-folder-badge';
+                    badge.textContent = `📁 ${Object.keys(data.children).length}`;
+                    li.appendChild(badge);
+                }
+
                 li.onclick = function() {
                     if (data.children) {
-                        renderList(data.children, data.title, data.children, true, listView);
+                        renderList(data.children, data.title, data.children, true, listView, key);
                         return;
                     }
-                    loadItem(key, this, collection);
+                    loadItem(key, this, collection, groupKey);
                 };
                 listContainer.appendChild(li);
 
@@ -257,38 +1104,72 @@
             if (firstItemKey) {
                 const firstItem = items[firstItemKey];
                 if (firstItem.children && autoLoad) {
-                    renderList(firstItem.children, firstItem.title, firstItem.children, true, listView);
+                    renderList(firstItem.children, firstItem.title, firstItem.children, true, listView, firstItemKey);
                 } else if (!firstItem.children) {
-                    loadItem(firstItemKey, firstElement, collection);
+                    loadItem(firstItemKey, firstElement, collection, groupKey);
+                } else {
+                    displayArea.innerHTML = `
+                        <div class="info-container">
+                            <h2 class="info-title">${listTitle}</h2>
+                            <p class="info-text">Selecione uma pasta ou item na barra lateral à esquerda, ou clique em <strong>"＋ Nova Página"</strong> para adicionar conteúdo facilmente.</p>
+                        </div>`;
                 }
             } else {
-                displayArea.innerHTML = '<div class="info-container"><h2 class="info-title">Nenhum Registo</h2><p class="info-text">Adicione ficheiros a esta categoria no dados.js.</p></div>';
+                displayArea.innerHTML = `
+                    <div class="info-container">
+                        <h2 class="info-title">Nenhum Registo nesta Categoria</h2>
+                        <p class="info-text">Clique no botão dourado <strong>"＋ Nova Página"</strong> no menu lateral para colar um JSON do 5etools ou criar uma ficha visualmente!</p>
+                        <button class="btn-new-page" style="max-width:240px; margin-top:15px;" onclick="openStudioModal()">＋ Criar Primeira Página</button>
+                    </div>`;
             }
+        }
+
+        function filterCurrentList(query) {
+            const q = (query || '').trim().toLowerCase();
+            document.querySelectorAll('#dynamic-item-list .list-item').forEach(li => {
+                const match = !q || (li.dataset.title && li.dataset.title.includes(q));
+                li.style.display = match ? 'flex' : 'none';
+            });
         }
 
         function goBackToList() {
             if (!currentListView || !currentListView.parentView) return;
-
             const parentView = currentListView.parentView;
-            renderList(parentView.items, parentView.listTitle, parentView.collection, false, parentView.parentView);
+            renderList(parentView.items, parentView.listTitle, parentView.collection, false, parentView.parentView, parentView.groupKey);
         }
 
         // Trocar Categoria
         function navigateCategory(categoryName, element) {
             document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
+            if (element) element.classList.add('active');
             
             currentCategory = categoryName;
-            const displayArea = document.getElementById('dynamic-display-area');
+            if (!compendioData[categoryName]) compendioData[categoryName] = {};
             const items = compendioData[categoryName];
 
+            const categoryTitles = {
+                monsters: 'Monstros',
+                npcs: 'NPCs',
+                maps: 'Mapas',
+                items: 'Itens',
+                curio: 'Curiosidades',
+                session: 'Planos de Sessão'
+            };
+
             if (!items || Object.keys(items).length === 0) {
+                document.getElementById('dynamic-list-title').textContent = categoryTitles[categoryName] || categoryName;
+                document.getElementById('session-back').style.display = 'none';
                 document.getElementById('dynamic-item-list').innerHTML = '<li class="list-item" style="color:#666; cursor:default;">Vazio</li>';
-                displayArea.innerHTML = '<div class="info-container"><h2 class="info-title">Nenhum Registo</h2><p class="info-text">Adicione ficheiros a esta categoria no dados.js.</p></div>';
+                document.getElementById('dynamic-display-area').innerHTML = `
+                    <div class="info-container">
+                        <h2 class="info-title">${categoryTitles[categoryName] || 'Vazio'}</h2>
+                        <p class="info-text">Ainda não há páginas nesta categoria. Clique abaixo para adicionar a primeira sem precisar programar!</p>
+                        <button class="btn-new-page" style="max-width:240px; margin-top:15px;" onclick="openStudioModal()">＋ Adicionar Página</button>
+                    </div>`;
                 return;
             }
 
-            renderList(items, categoryName === 'session' ? 'Lista de Sessões' : 'Lista de ' + categoryName, items, false);
+            renderList(items, categoryTitles[categoryName] || ('Lista de ' + categoryName), items, false, null, '');
         }
 
         // Lógica dos Botões das Abas (Dentro do ficheiro injetado)
@@ -297,128 +1178,19 @@
             displayArea.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
             displayArea.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            displayArea.querySelector('.' + tabClassName).classList.add('active');
+            const target = displayArea.querySelector('.' + tabClassName);
+            if (target) target.classList.add('active');
         }
 
-        // Parser para adicionar dinamicamente.
-        function jsonToStatblock(json) {
-            // 1. Funções Auxiliares (Limpadores e Formatadores)
-            const getMod = (score) => {
-                const mod = Math.floor((score - 10) / 2);
-                return mod >= 0 ? `+${mod}` : mod;
-            };
-
-            const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-
-            // Limpa a sintaxe suja do 5etools (ex: {@hit 19} vira 19, {@condition Grappled|XPHB} vira Grappled)
-            const cleanTags = (text) => {
-                if (!text) return "";
-                return text
-                    .replace(/\{@h\}/g, "<em>Hit:</em> ")
-                    .replace(/\{@atkr m\}/g, "<em>Melee Attack:</em>")
-                    .replace(/\{@atkr r\}/g, "<em>Ranged Attack:</em>")
-                    .replace(/\{@recharge\s?([^}]+)?\}/g, "(Recharge $1)")
-                    .replace(/\{@[a-zA-Z]+\s([^}|]+)(?:\|[^}]+)?\}/g, "$1");
-            };
-
-            // Formata o subtítulo (Tamanho, Tipo, Alinhamento)
-            const sizeMap = { "T": "Tiny", "S": "Small", "M": "Medium", "L": "Large", "H": "Huge", "G": "Gargantuan" };
-            const size = sizeMap[json.size[0]] || "Medium";
-            
-            let type = typeof json.type === 'string' ? json.type : json.type.type;
-            if (json.type.tags) type += ` (${json.type.tags.join(", ")})`;
-            
-            const alignMap = { "U": "Unaligned", "L": "Lawful", "C": "Chaotic", "E": "Evil", "G": "Good", "N": "Neutral" };
-            const align = json.alignment.map(a => alignMap[a] || a).join(" ") || "Unaligned";
-
-            const subtitle = `${size} ${type}, ${align}`.toLowerCase();
-
-            // Formata a CA (Alguns JSONs têm números, outros têm objetos)
-            const ac = typeof json.ac[0] === 'number' ? json.ac[0] : json.ac[0].ac;
-
-            // 2. Início da Construção do HTML
-            let html = `
-            <div class="monster-card">
-                <h1>${json.name}</h1>
-                <div class="subtitle">${capitalize(subtitle)}</div>
-                <hr class="red-line">
-                
-                <div class="stats-line"><span class="label">Armor Class</span> ${ac}</div>
-                <div class="stats-line"><span class="label">Hit Points</span> ${json.hp.average} (${json.hp.formula})</div>
-                <div class="stats-line"><span class="label">Speed</span> ${Object.entries(json.speed).map(([k, v]) => `${k !== 'walk' ? k + ' ' : ''}${v} ft.`).join(", ")}</div>
-                
-                <hr class="red-line">
-                
-                <table class="abilities">
-                    <tr><th>STR</th><th>DEX</th><th>CON</th><th>INT</th><th>WIS</th><th>CHA</th></tr>
-                    <tr>
-                        <td>${json.str} (${getMod(json.str)})</td>
-                        <td>${json.dex} (${getMod(json.dex)})</td>
-                        <td>${json.con} (${getMod(json.con)})</td>
-                        <td>${json.int} (${getMod(json.int)})</td>
-                        <td>${json.wis} (${getMod(json.wis)})</td>
-                        <td>${json.cha} (${getMod(json.cha)})</td>
-                    </tr>
-                </table>
-                
-                <hr class="red-line">
-            `;
-
-            // 3. Blocos Condicionais (O que separa o Esqueleto do Tarrasque)
-            if (json.save) {
-                const saves = Object.entries(json.save).map(([k, v]) => `${capitalize(k)} ${v}`).join(", ");
-                html += `<div class="stats-line"><span class="label">Saving Throws</span> ${saves}</div>`;
-            }
-            
-            if (json.skill) {
-                const skills = Object.entries(json.skill).map(([k, v]) => `${capitalize(k)} ${v}`).join(", ");
-                html += `<div class="stats-line"><span class="label">Skills</span> ${skills}</div>`;
-            }
-
-            if (json.vulnerable) html += `<div class="stats-line"><span class="label">Damage Vulnerabilities</span> ${json.vulnerable.join(", ")}</div>`;
-            if (json.resist) html += `<div class="stats-line"><span class="label">Damage Resistances</span> ${json.resist.join(", ")}</div>`;
-            if (json.immune) html += `<div class="stats-line"><span class="label">Damage Immunities</span> ${json.immune.join(", ")}</div>`;
-            if (json.conditionImmune) html += `<div class="stats-line"><span class="label">Condition Immunities</span> ${json.conditionImmune.join(", ")}</div>`;
-            
-            if (json.senses) html += `<div class="stats-line"><span class="label">Senses</span> ${json.senses.join(", ")}, passive Perception ${json.passive}</div>`;
-            
-            const languages = json.languages ? json.languages.join(", ") : "—";
-            html += `<div class="stats-line"><span class="label">Languages</span> ${languages}</div>`;
-            
-            if (json.cr) html += `<div class="stats-line"><span class="challenge">Challenge</span> ${json.cr}</div>`;
-
-            html += `<hr class="red-line">`;
-
-            // 4. Renderizador de Ações (Traits, Actions, Legendary)
-            const renderSection = (title, dataArray) => {
-                if (!dataArray || dataArray.length === 0) return "";
-                let secHtml = title ? `<div class="section-title">${title}</div>` : "";
-                
-                dataArray.forEach(item => {
-                    secHtml += `<p><span class="trait-title">${item.name}.</span> ${cleanTags(item.entries.join(" "))}</p>`;
-                });
-                return secHtml;
-            };
-
-            html += renderSection(null, json.trait); // Traits não têm título de seção
-            html += renderSection("Actions", json.action);
-            html += renderSection("Bonus Actions", json.bonus);
-            html += renderSection("Reactions", json.reaction);
-            
-            if (json.legendary) {
-                html += `<div class="section-title">Legendary Actions</div>`;
-                html += `<p>The monster can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The monster regains spent legendary actions at the start of its turn.</p>`;
-                html += renderSection(null, json.legendary);
-            }
-
-            html += `</div>`; // Fecha .monster-card
-            return html;
-        }
-
-        // A função jsonToStatblock deve estar colada algures aqui no seu <script> ou num ficheiro parser.js carregado no topo.
         async function fetchWithRetry(path, attempts = 2) {
-            let lastError;
+            if (virtualFiles[path]) {
+                return {
+                    ok: true,
+                    text: async () => virtualFiles[path]
+                };
+            }
 
+            let lastError;
             for (let attempt = 1; attempt <= attempts; attempt++) {
                 try {
                     const response = await fetch(path, attempt === 1 ? { cache: "no-cache" } : { cache: "reload" });
@@ -430,64 +1202,131 @@
                     lastError = error;
                 }
             }
-
             throw lastError;
         }
 
         function parseJsonWithFallback(rawText, path) {
-            const candidates = [rawText.replace(/^\uFEFF/, "").trim()];
+            const candidates = [String(rawText || '').replace(/^\uFEFF/, "").trim()];
             const fencedJson = candidates[0].match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);
-
             if (fencedJson) candidates.push(fencedJson[1].trim());
 
             for (const candidate of candidates) {
                 try {
-                    const parsed = JSON.parse(candidate);
+                    let parsed = JSON.parse(candidate);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        parsed = parsed[0];
+                    } else if (parsed && typeof parsed === 'object') {
+                        // Caso o utilizador cole um objeto de topo do 5etools como { "monster": [ { ... } ] }
+                        const arrayKeys = ['monster', 'item', 'baseitem', 'spell', 'npc'];
+                        for (const k of arrayKeys) {
+                            if (Array.isArray(parsed[k]) && parsed[k].length > 0) {
+                                parsed = parsed[k][0];
+                                break;
+                            }
+                        }
+                    }
                     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
                         throw new Error("o conteúdo raiz precisa ser um objeto JSON");
                     }
                     return parsed;
-                } catch (error) {
-                    // Tenta o próximo formato antes de reportar a falha.
-                }
+                } catch (error) {}
             }
 
-            throw new Error(`Não foi possível interpretar o JSON de ${path}. Verifique a sintaxe e o conteúdo do arquivo.`);
+            throw new Error(`Não foi possível interpretar o JSON de ${path || 'entrada'}. Verifique se copiou todas as chaves { }.`);
         }
 
-        async function loadItem(itemKey, element, collection = compendioData[currentCategory]) {
-            const parentList = element.closest('.item-list');
-            parentList.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
+        function isImagePath(path, tipo) {
+            if (tipo === 'png' || tipo === 'jpg' || tipo === 'image') return true;
+            return /\.(png|jpe?g|webp|gif|svg)$/i.test(String(path || ''));
+        }
+
+        function renderEntryToolbar() {
+            if (!activeItemContext) return '';
+            return `
+                <div class="entry-toolbar">
+                    <button type="button" class="btn-action-bar" onclick="openStudioModal()">＋ Nova Página</button>
+                    <button type="button" class="btn-action-bar" onclick="editActiveEntry()">✏️ Editar esta Página</button>
+                    <button type="button" class="btn-action-bar danger" onclick="deleteActiveEntry()">🗑️ Excluir</button>
+                </div>
+            `;
+        }
+
+        async function loadItem(itemKey, element, collection = compendioData[currentCategory], groupKey = '') {
+            if (element) {
+                const parentList = element.closest('.item-list');
+                if (parentList) parentList.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+            }
 
             const displayArea = document.getElementById('dynamic-display-area');
             const itemData = collection[itemKey];
+            if (!itemData) return;
+
+            activeItemContext = { key: itemKey, itemData, collection, groupKey };
 
             try {
                 displayArea.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;">Decifrando runas...</div>';
-                
-                // Faz o download do ficheiro (seja HTML ou JSON)
-                const response = await fetchWithRetry(itemData.path);
 
                 let htmlFinal = "";
 
-                // O SISTEMA DE BIFURCAÇÃO
-                if (itemData.tipo === "json") {
-                    // Lê como texto para permitir recuperação de BOM e blocos Markdown.
-                    const rawText = await response.text();
-                    const rawJson = parseJsonWithFallback(rawText, itemData.path);
-                    
-                    // 2. Passa o JSON pelo nosso Parser para virar Ficha
-                    // const statblockHtml = jsonToStatblock(rawJson);
-                    // Agora chamamos a função mestra que descobre sozinha se é Item, Monstro ou Lore!
-                    const statblockHtml = renderItemFromJson(rawJson, itemData);
-                    
-                    // 3. Envolve a ficha no sistema de abas para manter o padrão
+                // 1. Se for Mapa ou Imagem (PNG, JPG, WebP)
+                if (isImagePath(itemData.path, itemData.tipo)) {
+                    const imgSrc = virtualFiles[itemData.path] || itemData.path;
                     htmlFinal = `
+                        ${renderEntryToolbar()}
+                        <div class="map-viewer-card">
+                            <div class="map-controls">
+                                <h2 class="info-title" style="margin:0; border:none; padding:0;">🗺️ ${itemData.title}</h2>
+                                <div style="display:flex; gap:8px;">
+                                    <button type="button" class="btn-action-bar" onclick="zoomMap(0.8)">➖ Diminuir</button>
+                                    <button type="button" class="btn-action-bar" onclick="zoomMap(1, true)">100%</button>
+                                    <button type="button" class="btn-action-bar" onclick="zoomMap(1.25)">➕ Ampliar</button>
+                                    <a href="${imgSrc}" target="_blank" class="btn-action-bar" style="text-decoration:none;">🔎 Abrir Original</a>
+                                </div>
+                            </div>
+                            <div class="map-viewport">
+                                <img id="active-map-img" src="${imgSrc}" alt="${itemData.title}" class="map-image" data-zoom="100">
+                            </div>
+                        </div>
+                    `;
+                }
+                // 2. Se for Item sem ficheiro configurado ainda
+                else if (!itemData.path && !itemData.inlineContent) {
+                    htmlFinal = `
+                        ${renderEntryToolbar()}
+                        <div class="info-container">
+                            <h2 class="info-title">${itemData.title}</h2>
+                            <p class="info-text">Esta página ainda não possui uma ficha preenchida. Clique em <strong>"✏️ Editar esta Página"</strong> no topo direito para colar o JSON do 5etools ou preencher os dados!</p>
+                        </div>
+                    `;
+                }
+                // 3. Se for JSON (5etools ou Criador Visual)
+                else if (itemData.tipo === "json") {
+                    const rawText = itemData.inlineContent || (await (await fetchWithRetry(itemData.path)).text());
+                    const rawJson = parseJsonWithFallback(rawText, itemData.path);
+                    activeItemContext.loadedJson = rawJson;
+
+                    const statblockHtml = renderItemFromJson(rawJson, itemData);
+                    const loreHtml = rawJson.fluffEntries && rawJson.fluffEntries.length
+                        ? renderEntries(rawJson.fluffEntries)
+                        : `<p class="info-text">Ficheiro de origem: <code>${itemData.path || 'Criado no Compêndio Web'}</code></p>`;
+
+                    const customArtSrc = rawJson.customArt ? (virtualFiles[rawJson.customArt] || rawJson.customArt) : null;
+                    const artTabBtn = customArtSrc ? `<button class="tab-btn" onclick="openTab(this, 'tab-images')">Imagens</button>` : '';
+                    const artTabContent = customArtSrc ? `
+                        <div class="tab-content tab-images">
+                            <div class="images-container">
+                                <img src="${customArtSrc}" alt="Arte de ${rawJson.name || itemData.title}" class="full-artwork">
+                            </div>
+                        </div>` : '';
+
+                    htmlFinal = `
+                        ${renderEntryToolbar()}
                         <div class="item-detail active">
                             <div class="tabs-header">
                                 <button class="tab-btn active" onclick="openTab(this, 'tab-statblock')">Stat Block</button>
                                 <button class="tab-btn" onclick="openTab(this, 'tab-info')">Info</button>
+                                ${artTabBtn}
                             </div>
                             <div class="tab-content tab-statblock active">
                                 <div class="page-container">
@@ -496,36 +1335,51 @@
                             </div>
                             <div class="tab-content tab-info">
                                 <div class="info-container">
-                                    <h2 class="info-title">Dados Importados</h2>
-                                    <p class="info-text">Este monstro foi importado através do arquivo <code>${itemData.path}</code>.</p>
+                                    <h2 class="info-title">${rawJson.name || itemData.title}</h2>
+                                    <div class="info-text">${loreHtml}</div>
                                 </div>
                             </div>
+                            ${artTabContent}
                         </div>
                     `;
-                } else {
-                    // Se for HTML, apenas injeta o texto cru exatamente como antes
-                    htmlFinal = await response.text();
+                }
+                // 4. Se for HTML
+                else {
+                    const rawHtml = itemData.inlineContent || (await (await fetchWithRetry(itemData.path)).text());
+                    activeItemContext.loadedHtml = rawHtml;
+                    htmlFinal = `${renderEntryToolbar()}${rawHtml}`;
                 }
 
                 displayArea.innerHTML = htmlFinal;
 
-                // Auto-scroll para telemóveis
-                if(window.innerWidth <= 768) {
+                if (window.innerWidth <= 768) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
 
             } catch (error) {
                 displayArea.innerHTML = `
+                    ${renderEntryToolbar()}
                     <div class="info-container" style="border-color: #9c3028;">
                         <h2 class="info-title" style="color: #9c3028;">Erro Dimensional</h2>
                         <p class="info-text">${error.message}</p>
+                        <p class="info-text">Você pode clicar em <strong>"✏️ Editar esta Página"</strong> acima para corrigir ou substituir o conteúdo desta ficha.</p>
                     </div>`;
             }
         }
 
+        function zoomMap(factor, reset = false) {
+            const img = document.getElementById('active-map-img');
+            if (!img) return;
+            let current = Number(img.dataset.zoom || 100);
+            current = reset ? 100 : Math.min(400, Math.max(30, Math.round(current * factor)));
+            img.dataset.zoom = current;
+            img.style.maxWidth = current === 100 ? '100%' : 'none';
+            img.style.width = current + '%';
+        }
+
         // Função Principal (Deteta o tipo e envia para o renderizador correto)
         function getResourcePaths(itemData) {
-            if (!itemData || !itemData.path) return {};
+            if (!itemData || !itemData.path) return { token: [], fluff: [], audio: [] };
 
             const pathParts = itemData.path.split('/');
             const fileName = pathParts.pop().replace(/\.json$/i, '');
@@ -540,9 +1394,10 @@
         }
 
         function renderFallbackImage(paths, alt, className) {
-            if (!paths.length) return '';
-            const serializedPaths = JSON.stringify(paths).replace(/"/g, '&quot;');
-            return `<img src="${paths[0]}" alt="${alt}" class="${className}" data-fallback-paths="${serializedPaths}" data-fallback-index="0" onerror="advanceResource(this)">`;
+            if (!paths || !paths.length) return '';
+            const resolvedPaths = paths.map(p => virtualFiles[p] || p);
+            const serializedPaths = JSON.stringify(resolvedPaths).replace(/"/g, '&quot;');
+            return `<img src="${resolvedPaths[0]}" alt="${alt}" class="${className}" data-fallback-paths="${serializedPaths}" data-fallback-index="0" onerror="advanceResource(this)">`;
         }
 
         function advanceResource(element) {
@@ -560,17 +1415,20 @@
             const paths = getResourcePaths(itemData);
             const resources = [];
 
-            if (json.hasToken) {
+            if (json.customToken) {
+                const tokenSrc = virtualFiles[json.customToken] || json.customToken;
+                resources.push(`<div class="token-container"><img src="${tokenSrc}" alt="Token de ${json.name || 'criatura'}" class="token-image"></div>`);
+            } else if (json.hasToken && paths.token.length) {
                 const token = renderFallbackImage(paths.token, `Token de ${json.name || 'criatura'}`, 'token-image');
                 if (token) resources.push(`<div class="token-container">${token}</div>`);
             }
 
-            if (json.hasFluffImages) {
+            if (json.hasFluffImages && paths.fluff.length && !json.customArt) {
                 const fluff = renderFallbackImage(paths.fluff, `Arte de ${json.name || 'criatura'}`, 'full-artwork');
                 if (fluff) resources.push(`<div class="images-container">${fluff}</div>`);
             }
 
-            if (json.soundClip && paths.audio.length) {
+            if (json.soundClip && paths.audio && paths.audio.length) {
                 resources.push(`<div><div class="resource-label">Som</div><audio class="resource-audio" controls preload="none" src="${paths.audio[0]}" onerror="this.parentElement.remove()"></audio></div>`);
             }
 
@@ -580,14 +1438,14 @@
         function renderItemFromJson(json, itemData) {
             if (!json) return `<div class="info-container"><p>JSON Inválido ou Vazio.</p></div>`;
 
-            // DETEÇÃO DE TIPO:
             // Se tiver hp e atributos, é Monstro ou NPC
             if (json.hp && json.str !== undefined) {
                 return `<div class="resource-panel">${renderResources(json, itemData)}</div>${renderMonsterStatblock(json)}`;
             } 
-            // Se tiver rarity, weight ou type genérico curto (como "TG"), é Item
-            else if (json.rarity || json.weight || json.value) {
-                return renderItemStatblock(json);
+            // Se tiver rarity, weight, wondrous ou value, é Item
+            else if (json.rarity || json.weight || json.value || json.wondrous) {
+                const artHtml = json.customArt ? `<div class="resource-panel"><div class="images-container"><img src="${virtualFiles[json.customArt] || json.customArt}" class="full-artwork" alt="${json.name}"></div></div>` : '';
+                return `${artHtml}${renderItemStatblock(json)}`;
             } 
             // Se não reconhecer, renderiza como um artigo genérico
             else {
@@ -602,24 +1460,37 @@
             if (typeof text !== 'string') return "";
             return text
                 .replace(/\{@h\}/g, "<em>Hit:</em> ")
+                .replace(/\{@atk mw\}/g, "<em>Melee Weapon Attack:</em>")
+                .replace(/\{@atk rw\}/g, "<em>Ranged Weapon Attack:</em>")
+                .replace(/\{@atk ms\}/g, "<em>Melee Spell Attack:</em>")
+                .replace(/\{@atk rs\}/g, "<em>Ranged Spell Attack:</em>")
+                .replace(/\{@atk mw,rw\}/g, "<em>Melee or Ranged Weapon Attack:</em>")
                 .replace(/\{@atkr m\}/g, "<em>Melee Attack:</em>")
                 .replace(/\{@atkr r\}/g, "<em>Ranged Attack:</em>")
+                .replace(/\{@hit ([^}]+)\}/g, "+$1")
+                .replace(/\{@dc ([^}]+)\}/g, "DC $1")
                 .replace(/\{@actSave ([^}]+)\}/g, (_, ability) => {
                     const abilityNames = { str: "Strength", dex: "Dexterity", con: "Constitution", int: "Intelligence", wis: "Wisdom", cha: "Charisma" };
                     return `<em>${abilityNames[ability] || ability} Saving Throw:</em>`;
                 })
                 .replace(/\{@actSaveFail\}/g, "<em>Failure:</em>")
                 .replace(/\{@actSaveSuccess\}/g, "<em>Success:</em>")
-                .replace(/\{@recharge\s?([^}]+)?\}/g, "(Recharge $1)")
-                .replace(/\{@dice ([^}]+)\}/g, "<strong>$1</strong>") // Destaca os dados ex: 1d4+4
-                .replace(/\{@[a-zA-Z]+\s([^}|]+)(?:\|[^}]+)?\}/g, "$1"); // Limpa @spell, @condition, @item...
+                .replace(/\{@recharge\s?([^}]+)?\}/g, (_, n) => `(Recharge ${n ? n + '–6' : '6'})`)
+                .replace(/\{@dice ([^}|]+)(?:\|[^}]+)?\}/g, "<strong>$1</strong>")
+                .replace(/\{@damage ([^}|]+)(?:\|[^}]+)?\}/g, "<strong>$1</strong>")
+                .replace(/\{@[a-zA-Z]+\s([^}|]+)(?:\|[^}]+)?\}/g, "$1");
         };
 
         function renderInlineValue(value) {
             if (value === null || value === undefined) return "";
             if (typeof value === "string" || typeof value === "number") return cleanTags(String(value));
-            if (Array.isArray(value)) return value.map(renderInlineValue).filter(Boolean).join(" ");
+            if (Array.isArray(value)) return value.map(renderInlineValue).filter(Boolean).join(", ");
             if (typeof value !== "object") return "";
+
+            if (value.special) return cleanTags(String(value.special));
+            if (value.resist) return `${renderInlineValue(value.resist)} ${value.note ? cleanTags(value.note) : ''}`.trim();
+            if (value.immune) return `${renderInlineValue(value.immune)} ${value.note ? cleanTags(value.note) : ''}`.trim();
+            if (value.vulnerable) return `${renderInlineValue(value.vulnerable)} ${value.note ? cleanTags(value.note) : ''}`.trim();
 
             if (value.name && value.entries) {
                 return `<strong>${cleanTags(value.name)}.</strong> ${renderInlineValue(value.entries)}`;
@@ -632,7 +1503,7 @@
             return Object.values(value).map(renderInlineValue).filter(Boolean).join(" ");
         }
 
-        const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+        const capitalize = (s) => s ? String(s).charAt(0).toUpperCase() + String(s).slice(1) : "";
 
         // ---------------------------------------------------------
         // RENDERIZADOR AVANÇADO DE TEXTO (Para listas e tabelas)
@@ -644,25 +1515,17 @@
             entriesArray.forEach(entry => {
                 if (typeof entry === 'string') {
                     html += `<p>${cleanTags(entry)}</p>`;
-                } else if (typeof entry === 'object') {
-                    
-                    // É um subtítulo com parágrafos dentro
-                    if (entry.name && entry.type === 'entries') {
+                } else if (typeof entry === 'object' && entry !== null) {
+                    if (entry.name && (entry.type === 'entries' || Array.isArray(entry.entries))) {
                         html += `<div class="section-title" style="font-size:18px; border-bottom:none;">${cleanTags(entry.name)}</div>`;
                         html += renderEntries(entry.entries);
-                    }
-                    
-                    // É uma lista (Bullet points)
-                    else if (entry.type === 'list') {
+                    } else if (entry.type === 'list' && Array.isArray(entry.items)) {
                         html += `<ul>`;
                         entry.items.forEach(item => {
                             html += `<li>${renderInlineValue(item)}</li>`;
                         });
                         html += `</ul>`;
-                    }
-                    
-                    // É uma Tabela
-                    else if (entry.type === 'table') {
+                    } else if (entry.type === 'table' && Array.isArray(entry.rows)) {
                         html += `<table class="abilities" style="margin-top: 15px;">`;
                         if (entry.caption) html += `<caption><strong>${entry.caption}</strong></caption>`;
                         if (entry.colLabels) {
@@ -672,12 +1535,13 @@
                             html += `<tr>${row.map(cell => `<td>${renderInlineValue(cell)}</td>`).join("")}</tr>`;
                         });
                         html += `</table>`;
+                    } else if (entry.entries) {
+                        html += renderEntries(entry.entries);
                     }
                 }
             });
             return html;
         }
-
 
         // ---------------------------------------------------------
         // RENDERIZADOR DE ITENS MÁGICOS E EQUIPAMENTOS
@@ -685,99 +1549,145 @@
         function renderItemStatblock(json) {
             const typeName = json.wondrous ? "Wondrous item" : (json.type || "Item");
             const rarity = json.rarity ? capitalize(json.rarity) : "Mundane";
-            const attunement = json.reqAttune ? " (requires attunement)" : "";
+            const attunement = json.reqAttune ? (typeof json.reqAttune === 'string' ? ` (requires attunement ${json.reqAttune})` : " (requires attunement)") : "";
             
             let html = `
             <div class="monster-card" style="border-top-color: #3b5b82; border-bottom-color: #3b5b82;">
-                <h1 style="color: #2c425e;">${json.name}</h1>
+                <h1 style="color: #2c425e;">${json.name || 'Item sem nome'}</h1>
                 <div class="subtitle">${typeName}, ${rarity}${attunement}</div>
                 <hr class="red-line" style="background: #2c425e;">
             `;
 
             const meta = [];
             if (json.weight) meta.push(`<span class="label">Weight:</span> ${json.weight} lb.`);
-            if (json.value) meta.push(`<span class="label">Value:</span> ${json.value / 100} gp`); // O valor geralmente vem em CP no 5etools, divide por 100 para GP
-            if (json.charges) meta.push(`<span class="label">Charges:</span> ${json.charges} (Regains ${cleanTags(json.rechargeAmount)})`);
+            if (json.value) meta.push(`<span class="label">Value:</span> ${json.value / 100} gp`);
+            if (json.charges) meta.push(`<span class="label">Charges:</span> ${json.charges}${json.rechargeAmount ? ` (Regains ${cleanTags(String(json.rechargeAmount))})` : ''}`);
             
             if (meta.length > 0) {
                 html += `<div class="stats-line">${meta.join(" | ")}</div><hr class="red-line" style="background: #2c425e;">`;
             }
 
-            // Renderiza a descrição do item
             html += renderEntries(json.entries);
-
             html += `</div>`;
             return html;
         }
 
-
         // ---------------------------------------------------------
-        // RENDERIZADOR DE MONSTROS (Atualizado)
+        // RENDERIZADOR DE MONSTROS (Atualizado e tolerante a variações do 5etools)
         // ---------------------------------------------------------
         function renderMonsterStatblock(json) {
-            const getMod = (score) => { const mod = Math.floor((score - 10) / 2); return mod >= 0 ? `+${mod}` : mod; };
+            const getMod = (score) => { const mod = Math.floor(((score || 10) - 10) / 2); return mod >= 0 ? `+${mod}` : mod; };
             
             const sizeMap = { "T": "Tiny", "S": "Small", "M": "Medium", "L": "Large", "H": "Huge", "G": "Gargantuan" };
-            const size = sizeMap[json.size[0]] || "Medium";
-            let type = typeof json.type === 'string' ? json.type : json.type.type;
-            if (json.type.tags) type += ` (${json.type.tags.join(", ")})`;
-            const alignMap = { "U": "Unaligned", "L": "Lawful", "C": "Chaotic", "E": "Evil", "G": "Good", "N": "Neutral" };
-            const align = json.alignment.map(a => alignMap[a] || a).join(" ") || "Unaligned";
+            const rawSize = Array.isArray(json.size) ? json.size[0] : (json.size || "M");
+            const size = sizeMap[rawSize] || rawSize || "Medium";
+
+            let type = "creature";
+            if (typeof json.type === 'string') {
+                type = json.type;
+            } else if (json.type && typeof json.type === 'object') {
+                type = json.type.type || "creature";
+                if (Array.isArray(json.type.tags) && json.type.tags.length) {
+                    type += ` (${json.type.tags.map(t => typeof t === 'string' ? t : (t.tag || '')).join(", ")})`;
+                }
+            }
+
+            const alignMap = { "U": "Unaligned", "L": "Lawful", "C": "Chaotic", "E": "Evil", "G": "Good", "N": "Neutral", "A": "Any alignment" };
+            const alignArr = Array.isArray(json.alignment) ? json.alignment : (json.alignment ? [json.alignment] : ["U"]);
+            const align = alignArr.map(a => typeof a === 'string' ? (alignMap[a] || a) : renderInlineValue(a)).join(" ") || "Unaligned";
             const subtitle = `${size} ${type}, ${align}`.toLowerCase();
             
-            const ac = typeof json.ac[0] === 'number' ? json.ac[0] : json.ac[0].ac;
-            const formatSpeed = (speed) => Object.entries(speed || {}).filter(([key]) => key !== "canHover").map(([key, value]) => {
-                const formattedValue = typeof value === "object" ? renderInlineValue(value) : value;
-                const distanceUnit = typeof value === "number" || (value && value.number !== undefined) ? " ft." : "";
-                return `${key !== 'walk' ? key + ' ' : ''}${formattedValue}${distanceUnit}`;
-            }).join(", ");
+            let ac = "10";
+            if (Array.isArray(json.ac) && json.ac.length > 0) {
+                const firstAc = json.ac[0];
+                if (typeof firstAc === 'number' || typeof firstAc === 'string') {
+                    ac = firstAc;
+                } else if (firstAc && typeof firstAc === 'object') {
+                    ac = `${firstAc.ac || 10}${firstAc.from ? ` (${firstAc.from.map(cleanTags).join(", ")})` : ""}`;
+                }
+            } else if (json.ac) {
+                ac = String(json.ac);
+            }
+
+            const formatSpeed = (speed) => {
+                if (!speed) return "30 ft.";
+                if (typeof speed === 'string') return speed;
+                return Object.entries(speed).filter(([key]) => key !== "canHover").map(([key, value]) => {
+                    const formattedValue = typeof value === "object" ? renderInlineValue(value) : value;
+                    const distanceUnit = typeof value === "number" || (value && value.number !== undefined) ? " ft." : "";
+                    return `${key !== 'walk' ? key + ' ' : ''}${formattedValue}${distanceUnit}`;
+                }).join(", ");
+            };
             const formatChallenge = (challenge) => typeof challenge === "object" ? challenge.cr || "Unknown" : challenge;
 
             let html = `
             <div class="monster-card">
-                <h1>${json.name}</h1>
+                <h1>${json.name || 'Criatura sem nome'}</h1>
                 <div class="subtitle">${capitalize(subtitle)}</div>
                 <hr class="red-line">
                 
                 <div class="stats-line"><span class="label">Armor Class</span> ${ac}</div>
-                <div class="stats-line"><span class="label">Hit Points</span> ${json.hp.average} (${json.hp.formula})</div>
+                <div class="stats-line"><span class="label">Hit Points</span> ${json.hp?.average ?? json.hp ?? 10} ${json.hp?.formula ? `(${json.hp.formula})` : ''}</div>
                 <div class="stats-line"><span class="label">Speed</span> ${formatSpeed(json.speed)}</div>
                 
                 <hr class="red-line">
                 <table class="abilities">
                     <tr><th>STR</th><th>DEX</th><th>CON</th><th>INT</th><th>WIS</th><th>CHA</th></tr>
                     <tr>
-                        <td>${json.str} (${getMod(json.str)})</td>
-                        <td>${json.dex} (${getMod(json.dex)})</td>
-                        <td>${json.con} (${getMod(json.con)})</td>
-                        <td>${json.int} (${getMod(json.int)})</td>
-                        <td>${json.wis} (${getMod(json.wis)})</td>
-                        <td>${json.cha} (${getMod(json.cha)})</td>
+                        <td>${json.str ?? 10} (${getMod(json.str)})</td>
+                        <td>${json.dex ?? 10} (${getMod(json.dex)})</td>
+                        <td>${json.con ?? 10} (${getMod(json.con)})</td>
+                        <td>${json.int ?? 10} (${getMod(json.int)})</td>
+                        <td>${json.wis ?? 10} (${getMod(json.wis)})</td>
+                        <td>${json.cha ?? 10} (${getMod(json.cha)})</td>
                     </tr>
                 </table>
                 <hr class="red-line">
             `;
 
-            if (json.save) html += `<div class="stats-line"><span class="label">Saving Throws</span> ${Object.entries(json.save).map(([k, v]) => `${capitalize(k)}${v}`).join(", ")}</div>`;
-            if (json.skill) html += `<div class="stats-line"><span class="label">Skills</span> ${Object.entries(json.skill).map(([k, v]) => `${capitalize(k)}${v}`).join(", ")}</div>`;
+            if (json.save && Object.keys(json.save).length) html += `<div class="stats-line"><span class="label">Saving Throws</span> ${Object.entries(json.save).map(([k, v]) => `${capitalize(k)} ${v}`).join(", ")}</div>`;
+            if (json.skill && Object.keys(json.skill).length) html += `<div class="stats-line"><span class="label">Skills</span> ${Object.entries(json.skill).map(([k, v]) => `${capitalize(k)} ${v}`).join(", ")}</div>`;
             
-            if (json.vulnerable) html += `<div class="stats-line"><span class="label">Damage Vulnerabilities</span> ${json.vulnerable.join(", ")}</div>`;
-            if (json.resist) html += `<div class="stats-line"><span class="label">Damage Resistances</span> ${json.resist.join(", ")}</div>`;
-            if (json.immune) html += `<div class="stats-line"><span class="label">Damage Immunities</span> ${json.immune.join(", ")}</div>`;
-            if (json.conditionImmune) html += `<div class="stats-line"><span class="label">Condition Immunities</span> ${json.conditionImmune.join(", ")}</div>`;
+            if (json.vulnerable && json.vulnerable.length) html += `<div class="stats-line"><span class="label">Damage Vulnerabilities</span> ${renderInlineValue(json.vulnerable)}</div>`;
+            if (json.resist && json.resist.length) html += `<div class="stats-line"><span class="label">Damage Resistances</span> ${renderInlineValue(json.resist)}</div>`;
+            if (json.immune && json.immune.length) html += `<div class="stats-line"><span class="label">Damage Immunities</span> ${renderInlineValue(json.immune)}</div>`;
+            if (json.conditionImmune && json.conditionImmune.length) html += `<div class="stats-line"><span class="label">Condition Immunities</span> ${renderInlineValue(json.conditionImmune)}</div>`;
             
-            if (json.senses) html += `<div class="stats-line"><span class="label">Senses</span> ${json.senses.join(", ")}, passive Perception ${json.passive}</div>`;
-            html += `<div class="stats-line"><span class="label">Languages</span> ${json.languages ? json.languages.join(", ") : "—"}</div>`;
+            if (json.senses && json.senses.length) {
+                html += `<div class="stats-line"><span class="label">Senses</span> ${Array.isArray(json.senses) ? json.senses.join(", ") : json.senses}${json.passive ? `, passive Perception ${json.passive}` : ''}</div>`;
+            } else if (json.passive) {
+                html += `<div class="stats-line"><span class="label">Senses</span> passive Perception ${json.passive}</div>`;
+            }
+            html += `<div class="stats-line"><span class="label">Languages</span> ${json.languages && json.languages.length ? (Array.isArray(json.languages) ? json.languages.join(", ") : json.languages) : "—"}</div>`;
             if (json.cr) html += `<div class="stats-line"><span class="challenge">Challenge</span> ${formatChallenge(json.cr)}</div>`;
 
             html += `<hr class="red-line">`;
 
-            // Processa ações usando as novas funções
+            // Suporte a Spellcasting do 5etools
+            if (Array.isArray(json.spellcasting)) {
+                json.spellcasting.forEach(sc => {
+                    html += `<p><span class="trait-title">${cleanTags(sc.name || 'Spellcasting')}.</span> ${sc.headerEntries ? sc.headerEntries.map(cleanTags).join(" ") : ""}</p>`;
+                    if (sc.will) html += `<p class="spell-list"><strong>At will:</strong> ${sc.will.map(cleanTags).join(", ")}</p>`;
+                    if (sc.daily) {
+                        for (const [k, list] of Object.entries(sc.daily)) {
+                            const perDay = k.replace('e', '/day each').replace(/^(\d+)$/, '$1/day');
+                            html += `<p class="spell-list"><strong>${perDay}:</strong> ${list.map(cleanTags).join(", ")}</p>`;
+                        }
+                    }
+                    if (sc.spells) {
+                        for (const [lvl, obj] of Object.entries(sc.spells)) {
+                            const label = lvl === '0' ? 'Cantrips (at will)' : `${lvl} level (${obj.slots || 0} slots)`;
+                            html += `<p class="spell-list"><strong>${label}:</strong> ${(obj.spells || []).map(cleanTags).join(", ")}</p>`;
+                        }
+                    }
+                });
+            }
+
             const renderActionSection = (title, dataArray) => {
                 if (!dataArray || dataArray.length === 0) return "";
                 let secHtml = title ? `<div class="section-title">${title}</div>` : "";
                 dataArray.forEach(item => {
-                    secHtml += `<p><span class="trait-title">${item.name}.</span> ${renderEntries(item.entries)}</p>`;
+                    secHtml += `<p><span class="trait-title">${cleanTags(item.name || '')}.</span> ${renderEntries(item.entries)}</p>`;
                 });
                 return secHtml;
             };
@@ -787,8 +1697,8 @@
             html += renderActionSection("Bonus Actions", json.bonus);
             html += renderActionSection("Reactions", json.reaction);
             
-            if (json.legendary) {
-                html += `<div class="section-title">Legendary Actions</div><p>The monster can take 3 legendary actions.</p>`;
+            if (json.legendary && json.legendary.length) {
+                html += `<div class="section-title">Legendary Actions</div><p>The creature can take 3 legendary actions, choosing from the options below.</p>`;
                 html += renderActionSection(null, json.legendary);
             }
 
@@ -802,9 +1712,694 @@
         function renderGenericArticle(json) {
             return `
             <div class="info-container">
-                <h2 class="info-title">${json.name || "Desconhecido"}</h2>
+                <h2 class="info-title">${json.name || "Artigo"}</h2>
                 ${renderEntries(json.entries)}
             </div>`;
+        }
+
+        // =========================================================
+        // ESTÚDIO WEB DE CRIAÇÃO E EDIÇÃO DE PÁGINAS (SEM CÓDIGO!)
+        // =========================================================
+        function slugify(text) {
+            return String(text || 'nova-pagina')
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '') || ('pagina-' + Date.now());
+        }
+
+        function setupDefaultVisualRows() {
+            const traitsList = document.getElementById('vf-traits-list');
+            const actionsList = document.getElementById('vf-actions-list');
+            if (traitsList && !traitsList.children.length) {
+                addDynamicRow('vf-traits-list', 'Resistência Lendária (3/Dia)', 'Se falhar num teste de resistência, pode escolher ter sucesso.');
+            }
+            if (actionsList && !actionsList.children.length) {
+                addDynamicRow('vf-actions-list', 'Multiataque', 'Realiza dois ataques corpo a corpo.');
+            }
+        }
+
+        function addDynamicRow(containerId, namePlaceholder = 'Nome', descPlaceholder = 'Descrição', nameVal = '', descVal = '') {
+            const container = document.getElementById(containerId);
+            const row = document.createElement('div');
+            row.className = 'dynamic-list-row';
+            row.innerHTML = `
+                <input type="text" class="form-control row-name" placeholder="${namePlaceholder}" value="${nameVal.replace(/"/g, '&quot;')}" oninput="updateStudioPreview()">
+                <input type="text" class="form-control row-desc" placeholder="${descPlaceholder}" value="${descVal.replace(/"/g, '&quot;')}" oninput="updateStudioPreview()">
+                <button type="button" class="btn-action-bar danger" onclick="this.parentElement.remove(); updateStudioPreview();">✕</button>
+            `;
+            container.appendChild(row);
+            updateStudioPreview();
+        }
+
+        function getDynamicRows(containerId) {
+            const rows = [];
+            document.querySelectorAll(`#${containerId} .dynamic-list-row`).forEach(row => {
+                const name = row.querySelector('.row-name').value.trim();
+                const desc = row.querySelector('.row-desc').value.trim();
+                if (name || desc) {
+                    rows.push({ name: name || 'Habilidade', entries: [desc] });
+                }
+            });
+            return rows;
+        }
+
+        function openStudioModal(isEdit = false) {
+            editingExistingKey = isEdit && activeItemContext ? activeItemContext.key : null;
+            studioImages = { token: null, art: null, map: null };
+
+            document.getElementById('studio-modal-title').textContent = editingExistingKey
+                ? `✏️ Editando: ${activeItemContext.itemData.title}`
+                : '✨ Adicionar Nova Página ao Compêndio';
+
+            const catSelect = document.getElementById('st-category');
+            catSelect.value = currentCategory || 'monsters';
+            updateGroupSelector(currentListView && currentListView.groupKey ? currentListView.groupKey : '');
+
+            if (!isEdit) {
+                if (currentCategory === 'items') switchStudioMode('item');
+                else if (currentCategory === 'maps' || currentCategory === 'session' || currentCategory === 'curio') {
+                    switchStudioMode('article');
+                    const sub = document.getElementById('va-subtype');
+                    sub.value = currentCategory === 'maps' ? 'map' : (currentCategory === 'session' ? 'session' : 'lore');
+                    toggleArticleSubtype();
+                } else {
+                    switchStudioMode('5etools');
+                }
+            }
+
+            document.getElementById('studio-modal-backdrop').classList.add('open');
+            updateStudioPreview();
+        }
+
+        function closeStudioModal() {
+            document.getElementById('studio-modal-backdrop').classList.remove('open');
+        }
+
+        function updateGroupSelector(preselect = '') {
+            const cat = document.getElementById('st-category').value;
+            const groupSelect = document.getElementById('st-group');
+            const catData = compendioData[cat] || {};
+
+            groupSelect.innerHTML = `<option value="">(Direto na raiz da categoria)</option>`;
+            for (const [key, val] of Object.entries(catData)) {
+                if (val && val.children) {
+                    const opt = document.createElement('option');
+                    opt.value = key;
+                    opt.textContent = `📁 ${val.title || key}`;
+                    groupSelect.appendChild(opt);
+                }
+            }
+            const newOpt = document.createElement('option');
+            newOpt.value = '__NEW__';
+            newOpt.textContent = '＋ Criar nova pasta / subcategoria...';
+            groupSelect.appendChild(newOpt);
+
+            if (preselect && catData[preselect] && catData[preselect].children) {
+                groupSelect.value = preselect;
+            } else {
+                groupSelect.value = '';
+            }
+            toggleNewGroupInput();
+        }
+
+        function toggleNewGroupInput() {
+            const val = document.getElementById('st-group').value;
+            document.getElementById('st-new-group-wrap').style.display = val === '__NEW__' ? 'flex' : 'none';
+        }
+
+        function switchStudioMode(mode) {
+            studioMode = mode;
+            document.querySelectorAll('.mode-card').forEach(el => {
+                el.classList.toggle('active', el.dataset.mode === mode);
+            });
+            document.querySelectorAll('.studio-mode-pane').forEach(el => el.style.display = 'none');
+            const target = document.getElementById(`mode-pane-${mode}`);
+            if (target) target.style.display = 'block';
+            updateStudioPreview();
+        }
+
+        function toggleArticleSubtype() {
+            const sub = document.getElementById('va-subtype').value;
+            document.getElementById('va-map-upload-group').style.display = 'flex';
+            document.getElementById('va-text-fields').style.display = sub === 'map' ? 'none' : 'block';
+            updateStudioPreview();
+        }
+
+        function handleStudioImage(event, kind) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+                studioImages[kind] = { dataUrl: reader.result, ext, name: file.name };
+                if (kind === 'map' && !document.getElementById('va-title').value) {
+                    document.getElementById('va-title').value = file.name.replace(/\.[^.]+$/, '');
+                }
+                updateStudioPreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleJsonFileUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                document.getElementById('json-raw-input').value = reader.result;
+                onRawJsonInput();
+            };
+            reader.readAsText(file);
+        }
+
+        function onRawJsonInput() {
+            const raw = document.getElementById('json-raw-input').value.trim();
+            if (raw) {
+                try {
+                    const parsed = parseJsonWithFallback(raw, 'input');
+                    const titleInput = document.getElementById('json-entry-title');
+                    if (parsed.name && !titleInput.value) {
+                        titleInput.value = parsed.name;
+                    }
+                    // Auto-seleciona categoria se for óbvio
+                    if (parsed.rarity || parsed.wondrous) {
+                        document.getElementById('st-category').value = 'items';
+                        updateGroupSelector();
+                    } else if (parsed.hp && parsed.str !== undefined) {
+                        if (document.getElementById('st-category').value !== 'npcs') {
+                            document.getElementById('st-category').value = 'monsters';
+                            updateGroupSelector();
+                        }
+                    }
+                } catch (e) {}
+            }
+            updateStudioPreview();
+        }
+
+        function loadSample5eJson() {
+            const sample = {
+                name: "Draconato Guardião",
+                size: ["M"],
+                type: "humanoid",
+                alignment: ["L", "G"],
+                ac: [{ ac: 18, from: ["plate armor"] }],
+                hp: { average: 97, formula: "13d8 + 39" },
+                speed: { walk: 30 },
+                str: 19, dex: 11, con: 16, int: 12, wis: 14, cha: 15,
+                save: { str: "+7", con: "+6" },
+                skill: { athletics: "+7", perception: "+5" },
+                resist: ["fire"],
+                senses: ["darkvision 60 ft."],
+                passive: 15,
+                languages: ["Common", "Draconic"],
+                cr: "5",
+                trait: [
+                    { name: "Draconic Majesty", entries: ["O guardião tem vantagem em testes de resistência contra ser amedrontado."] }
+                ],
+                action: [
+                    { name: "Multiattack", entries: ["O guardião realiza dois ataques com sua Espada Bastarda Flamejante."] },
+                    { name: "Espada Bastarda Flamejante", entries: ["{@atk mw} {@hit 7} para atingir, alcance 5 ft., um alvo. {@h}11 ({@damage 2d6 + 4}) de dano cortante mais 7 ({@damage 2d6}) de dano de fogo."] },
+                    { name: "Sopro de Fogo {@recharge 5}", entries: ["O guardião exala fogo num cone de 15 pés. Cada criatura na área deve fazer um teste de resistência de Destreza {@dc 14}, sofrendo 24 ({@damage 7d6}) de dano de fogo na falha, ou metade no sucesso."] }
+                ]
+            };
+            document.getElementById('json-raw-input').value = JSON.stringify(sample, null, 2);
+            document.getElementById('json-entry-title').value = sample.name;
+            updateStudioPreview();
+        }
+
+        function convertJsonToVisualForm() {
+            const raw = document.getElementById('json-raw-input').value.trim();
+            if (!raw) {
+                showToast('Cole um JSON primeiro para carregá-lo no editor visual!');
+                return;
+            }
+            try {
+                const j = parseJsonWithFallback(raw, 'input');
+                if (j.rarity || j.wondrous) {
+                    document.getElementById('vi-name').value = j.name || '';
+                    document.getElementById('vi-type').value = j.wondrous ? 'Wondrous item' : (j.type || 'Item');
+                    document.getElementById('vi-rarity').value = j.rarity || 'rare';
+                    document.getElementById('vi-attune').value = j.reqAttune ? 'true' : 'false';
+                    document.getElementById('vi-weight').value = j.weight || '';
+                    document.getElementById('vi-desc').value = Array.isArray(j.entries) ? j.entries.map(e => typeof e === 'string' ? cleanTags(e) : '').filter(Boolean).join('\n\n') : '';
+                    switchStudioMode('item');
+                    showToast('Item carregado no Criador Visual!');
+                    return;
+                }
+
+                document.getElementById('vf-name').value = j.name || '';
+                document.getElementById('vf-size').value = Array.isArray(j.size) ? j.size[0] : 'M';
+                document.getElementById('vf-type').value = typeof j.type === 'string' ? j.type : (j.type?.type || 'humanoid');
+                document.getElementById('vf-align').value = Array.isArray(j.alignment) ? j.alignment.join(' ') : (j.alignment || 'Neutral');
+                document.getElementById('vf-ac').value = Array.isArray(j.ac) ? (typeof j.ac[0] === 'object' ? `${j.ac[0].ac}${j.ac[0].from ? ` (${j.ac[0].from.join(', ')})` : ''}` : j.ac[0]) : (j.ac || 15);
+                document.getElementById('vf-hp-avg').value = j.hp?.average ?? 50;
+                document.getElementById('vf-hp-form').value = j.hp?.formula ?? '8d8 + 14';
+                document.getElementById('vf-speed').value = typeof j.speed === 'object' ? Object.entries(j.speed).map(([k, v]) => `${k !== 'walk' ? k + ' ' : ''}${v} ft.`).join(', ') : (j.speed || '30 ft.');
+                document.getElementById('vf-cr').value = typeof j.cr === 'object' ? j.cr.cr : (j.cr || '1');
+                document.getElementById('vf-passive').value = j.passive || 12;
+
+                ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(stat => {
+                    document.getElementById(`vf-${stat}`).value = j[stat] ?? 10;
+                });
+
+                document.getElementById('vf-saves').value = j.save ? Object.entries(j.save).map(([k, v]) => `${capitalize(k)} ${v}`).join(', ') : '';
+                document.getElementById('vf-skills').value = j.skill ? Object.entries(j.skill).map(([k, v]) => `${capitalize(k)} ${v}`).join(', ') : '';
+                document.getElementById('vf-resist').value = Array.isArray(j.resist) ? j.resist.map(renderInlineValue).join(', ') : '';
+                document.getElementById('vf-immune').value = Array.isArray(j.immune) ? j.immune.map(renderInlineValue).join(', ') : '';
+                document.getElementById('vf-senses').value = Array.isArray(j.senses) ? j.senses.join(', ') : '';
+                document.getElementById('vf-langs').value = Array.isArray(j.languages) ? j.languages.join(', ') : '';
+
+                const populateRows = (id, arr) => {
+                    const el = document.getElementById(id);
+                    el.innerHTML = '';
+                    (arr || []).forEach(item => {
+                        const desc = Array.isArray(item.entries) ? item.entries.map(e => typeof e === 'string' ? e : renderInlineValue(e)).join(' ') : '';
+                        addDynamicRow(id, 'Nome', 'Descrição', item.name || '', desc);
+                    });
+                };
+                populateRows('vf-traits-list', j.trait);
+                populateRows('vf-actions-list', j.action);
+                populateRows('vf-legendary-list', j.legendary);
+
+                switchStudioMode('monster');
+                showToast('JSON carregado no Criador Visual para edição fácil!');
+            } catch (e) {
+                showToast('Erro ao converter JSON: ' + e.message);
+            }
+        }
+
+        function buildJsonFromMonsterForm() {
+            const parseKeyVal = (str) => {
+                if (!str || !str.trim()) return undefined;
+                const obj = {};
+                str.split(',').forEach(part => {
+                    const m = part.trim().match(/^([a-zA-ZÀ-ÿ]+)\s*(.+)$/);
+                    if (m) obj[m[1].toLowerCase()] = m[2].trim();
+                });
+                return Object.keys(obj).length ? obj : undefined;
+            };
+            const splitComma = (str) => str && str.trim() ? str.split(',').map(s => s.trim()).filter(Boolean) : undefined;
+
+            const loreText = document.getElementById('vf-lore').value.trim();
+
+            return {
+                name: document.getElementById('vf-name').value.trim() || 'Nova Criatura',
+                size: [document.getElementById('vf-size').value],
+                type: document.getElementById('vf-type').value.trim() || 'humanoid',
+                alignment: [document.getElementById('vf-align').value.trim() || 'Unaligned'],
+                ac: [document.getElementById('vf-ac').value.trim() || 15],
+                hp: {
+                    average: Number(document.getElementById('vf-hp-avg').value || 50),
+                    formula: document.getElementById('vf-hp-form').value.trim() || '6d8 + 18'
+                },
+                speed: document.getElementById('vf-speed').value.trim() || '30 ft.',
+                str: Number(document.getElementById('vf-str').value || 10),
+                dex: Number(document.getElementById('vf-dex').value || 10),
+                con: Number(document.getElementById('vf-con').value || 10),
+                int: Number(document.getElementById('vf-int').value || 10),
+                wis: Number(document.getElementById('vf-wis').value || 10),
+                cha: Number(document.getElementById('vf-cha').value || 10),
+                save: parseKeyVal(document.getElementById('vf-saves').value),
+                skill: parseKeyVal(document.getElementById('vf-skills').value),
+                resist: splitComma(document.getElementById('vf-resist').value),
+                immune: splitComma(document.getElementById('vf-immune').value),
+                senses: splitComma(document.getElementById('vf-senses').value),
+                passive: Number(document.getElementById('vf-passive').value || 12),
+                languages: splitComma(document.getElementById('vf-langs').value),
+                cr: document.getElementById('vf-cr').value.trim() || '1',
+                trait: getDynamicRows('vf-traits-list'),
+                action: getDynamicRows('vf-actions-list'),
+                legendary: getDynamicRows('vf-legendary-list'),
+                fluffEntries: loreText ? loreText.split(/\n+/).map(s => s.trim()).filter(Boolean) : undefined
+            };
+        }
+
+        function buildJsonFromItemForm() {
+            const typeStr = document.getElementById('vi-type').value.trim() || 'Wondrous item';
+            const desc = document.getElementById('vi-desc').value.trim();
+            return {
+                name: document.getElementById('vi-name').value.trim() || 'Novo Item Mágico',
+                wondrous: typeStr.toLowerCase().includes('wondrous'),
+                type: typeStr,
+                rarity: document.getElementById('vi-rarity').value,
+                reqAttune: document.getElementById('vi-attune').value === 'true',
+                weight: document.getElementById('vi-weight').value ? Number(document.getElementById('vi-weight').value) : undefined,
+                entries: desc ? desc.split(/\n+/).map(s => s.trim()).filter(Boolean) : ['Descrição do item mágico.']
+            };
+        }
+
+        function buildHtmlFromArticleForm(imgPath) {
+            const sub = document.getElementById('va-subtype').value;
+            const title = document.getElementById('va-title').value.trim() || 'Nova Página';
+            const subtitle = document.getElementById('va-subtitle').value.trim();
+            const body = document.getElementById('va-body').value.trim();
+            const scenes = document.getElementById('va-scenes').value.trim();
+            const notes = document.getElementById('va-notes').value.trim();
+
+            const paragraphs = (body || 'Conteúdo da página.')
+                .split(/\n+/)
+                .map(p => `<p>${p}</p>`)
+                .join('');
+
+            const scenesList = scenes
+                ? `<ol>${scenes.split(/\n+/).filter(Boolean).map(s => `<li>${s}</li>`).join('')}</ol>`
+                : '<p>Nenhuma cena listada.</p>';
+
+            const notesParagraphs = notes
+                ? notes.split(/\n+/).filter(Boolean).map(n => `<p>${n}</p>`).join('')
+                : '<p>Sem notas adicionais.</p>';
+
+            const imgSection = imgPath
+                ? `<div class="images-container"><img src="${virtualFiles[imgPath] || imgPath}" class="full-artwork" alt="${title}"></div>`
+                : '';
+
+            if (sub === 'session') {
+                return `
+<link rel="stylesheet" href="./session/casa-varhen/session.css">
+<div class="item-detail active session-part">
+    <header class="part-header">
+        <div class="part-kicker">Plano de Sessão</div>
+        <h1>${title}</h1>
+        ${subtitle ? `<p class="part-subtitle">${subtitle}</p>` : ''}
+    </header>
+    <div class="part-grid">
+        <section class="part-panel wide">
+            <h2>História e Objetivos</h2>
+            ${paragraphs}
+        </section>
+        <section class="part-panel">
+            <h2>Cenas & Pontos-Chave</h2>
+            ${scenesList}
+        </section>
+        <section class="part-panel">
+            <h2>Encontros & Notas do Mestre</h2>
+            ${notesParagraphs}
+        </section>
+    </div>
+    ${imgSection}
+</div>`;
+            }
+
+            return `
+<div class="item-detail active">
+    <div class="info-container">
+        <h2 class="info-title">${title}</h2>
+        ${subtitle ? `<p class="info-text"><em>${subtitle}</em></p>` : ''}
+        <div class="info-text">${paragraphs}</div>
+        ${notes ? `<hr style="border-color:#333; margin:15px 0;"><div class="info-text">${notesParagraphs}</div>` : ''}
+        ${imgSection}
+    </div>
+</div>`;
+        }
+
+        function updateStudioPreview() {
+            const previewContainer = document.getElementById('studio-live-preview');
+            if (!previewContainer) return;
+
+            try {
+                if (studioMode === '5etools') {
+                    const raw = document.getElementById('json-raw-input').value.trim();
+                    if (!raw) {
+                        previewContainer.innerHTML = `<div class="info-container"><p class="info-text">Cole um JSON do 5etools ou clique em <strong>"✨ Testar Exemplo"</strong> para ver a ficha ganhar vida instantaneamente aqui!</p></div>`;
+                        return;
+                    }
+                    const json = parseJsonWithFallback(raw, 'preview');
+                    if (studioImages.token) json.customToken = studioImages.token.dataUrl;
+                    if (studioImages.art) json.customArt = studioImages.art.dataUrl;
+                    previewContainer.innerHTML = `<div class="page-container" style="flex-direction:column; gap:15px;">${renderItemFromJson(json, {})}</div>`;
+                } else if (studioMode === 'monster') {
+                    const json = buildJsonFromMonsterForm();
+                    if (studioImages.token) json.customToken = studioImages.token.dataUrl;
+                    if (studioImages.art) json.customArt = studioImages.art.dataUrl;
+                    previewContainer.innerHTML = `<div class="page-container" style="flex-direction:column; gap:15px;">${renderItemFromJson(json, {})}</div>`;
+                } else if (studioMode === 'item') {
+                    const json = buildJsonFromItemForm();
+                    if (studioImages.art) json.customArt = studioImages.art.dataUrl;
+                    previewContainer.innerHTML = renderItemFromJson(json, {});
+                } else if (studioMode === 'article') {
+                    const sub = document.getElementById('va-subtype').value;
+                    if (sub === 'map') {
+                        const imgSrc = studioImages.map ? studioImages.map.dataUrl : '';
+                        const title = document.getElementById('va-title').value.trim() || 'Novo Mapa';
+                        previewContainer.innerHTML = imgSrc
+                            ? `<div class="map-viewer-card"><h3 style="color:var(--accent-gold); margin-top:0;">🗺️ ${title}</h3><img src="${imgSrc}" class="map-image"></div>`
+                            : `<div class="info-container"><p class="info-text">Selecione uma imagem do seu computador para pré-visualizar o mapa.</p></div>`;
+                    } else {
+                        previewContainer.innerHTML = buildHtmlFromArticleForm(studioImages.map ? studioImages.map.dataUrl : null);
+                    }
+                }
+            } catch (e) {
+                previewContainer.innerHTML = `
+                    <div class="info-container" style="border-color:#9c3028;">
+                        <h3 style="color:#e57373; margin-top:0;">Aguardando JSON válido...</h3>
+                        <p class="info-text" style="font-size:13px;">${e.message}</p>
+                    </div>`;
+            }
+        }
+
+        async function persistToDiskIfAvailable(filesToWrite = []) {
+            saveLocalPersistence();
+            if (!serverWritable) return false;
+
+            try {
+                const res = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        files: filesToWrite,
+                        compendioData
+                    })
+                });
+                const data = await res.json();
+                return Boolean(data && data.ok);
+            } catch (e) {
+                console.warn('Falha ao gravar no servidor local:', e);
+                return false;
+            }
+        }
+
+        async function saveStudioEntry() {
+            const category = document.getElementById('st-category').value;
+            let groupKey = document.getElementById('st-group').value;
+            if (!compendioData[category]) compendioData[category] = {};
+
+            // Se escolheu criar nova pasta
+            if (groupKey === '__NEW__') {
+                const newGroupTitle = document.getElementById('st-new-group-title').value.trim();
+                if (!newGroupTitle) {
+                    showToast('Digite o nome da nova pasta/subcategoria!');
+                    return;
+                }
+                groupKey = slugify(newGroupTitle);
+                if (!compendioData[category][groupKey]) {
+                    compendioData[category][groupKey] = {
+                        title: newGroupTitle,
+                        children: {}
+                    };
+                }
+            }
+
+            const targetCollection = groupKey && compendioData[category][groupKey]?.children
+                ? compendioData[category][groupKey].children
+                : compendioData[category];
+
+            const folderPrefixMap = {
+                monsters: 'monster/data',
+                npcs: 'npc',
+                items: 'item',
+                maps: 'map',
+                curio: 'curio',
+                session: 'session'
+            };
+            const baseFolder = folderPrefixMap[category] || category;
+
+            let title = '';
+            let entryObj = {};
+            const filesToWrite = [];
+
+            try {
+                if (studioMode === '5etools' || studioMode === 'monster' || studioMode === 'item') {
+                    let jsonObj;
+                    if (studioMode === '5etools') {
+                        const raw = document.getElementById('json-raw-input').value.trim();
+                        if (!raw) {
+                            showToast('Cole o JSON do 5etools antes de salvar!');
+                            return;
+                        }
+                        jsonObj = parseJsonWithFallback(raw, 'input');
+                        title = document.getElementById('json-entry-title').value.trim() || jsonObj.name || 'Nova Ficha';
+                        const loreExtra = document.getElementById('json-lore-input').value.trim();
+                        if (loreExtra) {
+                            jsonObj.fluffEntries = loreExtra.split(/\n+/).map(s => s.trim()).filter(Boolean);
+                        }
+                    } else if (studioMode === 'monster') {
+                        jsonObj = buildJsonFromMonsterForm();
+                        title = jsonObj.name;
+                    } else {
+                        jsonObj = buildJsonFromItemForm();
+                        title = jsonObj.name;
+                    }
+
+                    const slug = editingExistingKey || slugify(title);
+                    const dirPath = `./${baseFolder}/${slug}`;
+
+                    if (studioImages.token) {
+                        const tokenRelPath = `${dirPath}/${slug}.${studioImages.token.ext || 'png'}`;
+                        jsonObj.hasToken = true;
+                        jsonObj.customToken = tokenRelPath;
+                        virtualFiles[tokenRelPath] = studioImages.token.dataUrl;
+                        filesToWrite.push({ path: tokenRelPath, base64: studioImages.token.dataUrl });
+                    }
+                    if (studioImages.art) {
+                        const artRelPath = `${dirPath}/${slug}-art.${studioImages.art.ext || 'png'}`;
+                        jsonObj.hasFluffImages = true;
+                        jsonObj.customArt = artRelPath;
+                        virtualFiles[artRelPath] = studioImages.art.dataUrl;
+                        filesToWrite.push({ path: artRelPath, base64: studioImages.art.dataUrl });
+                    }
+
+                    const jsonRelPath = `${dirPath}/${slug}.json`;
+                    const jsonString = JSON.stringify(jsonObj, null, 2);
+                    virtualFiles[jsonRelPath] = jsonString;
+                    filesToWrite.push({ path: jsonRelPath, content: jsonString });
+
+                    entryObj = {
+                        title,
+                        tipo: 'json',
+                        path: jsonRelPath
+                    };
+                    if (!serverWritable) entryObj.inlineContent = jsonString;
+
+                    targetCollection[slug] = entryObj;
+                } else if (studioMode === 'article') {
+                    const sub = document.getElementById('va-subtype').value;
+                    title = document.getElementById('va-title').value.trim() || 'Nova Página';
+                    const slug = editingExistingKey || slugify(title);
+                    const dirPath = `./${baseFolder}/${slug}`;
+
+                    if (sub === 'map') {
+                        if (!studioImages.map && (!editingExistingKey || !activeItemContext?.itemData?.path)) {
+                            showToast('Selecione um arquivo de imagem para o mapa!');
+                            return;
+                        }
+                        const mapRelPath = studioImages.map
+                            ? `${dirPath}/${slug}.${studioImages.map.ext || 'png'}`
+                            : activeItemContext.itemData.path;
+
+                        if (studioImages.map) {
+                            virtualFiles[mapRelPath] = studioImages.map.dataUrl;
+                            filesToWrite.push({ path: mapRelPath, base64: studioImages.map.dataUrl });
+                        }
+                        entryObj = {
+                            title,
+                            tipo: 'png',
+                            path: mapRelPath
+                        };
+                        targetCollection[slug] = entryObj;
+                    } else {
+                        let imgRelPath = null;
+                        if (studioImages.map) {
+                            imgRelPath = `${dirPath}/${slug}-img.${studioImages.map.ext || 'png'}`;
+                            virtualFiles[imgRelPath] = studioImages.map.dataUrl;
+                            filesToWrite.push({ path: imgRelPath, base64: studioImages.map.dataUrl });
+                        }
+                        const htmlRelPath = `${dirPath}/${slug}.html`;
+                        const htmlContent = buildHtmlFromArticleForm(imgRelPath);
+                        virtualFiles[htmlRelPath] = htmlContent;
+                        filesToWrite.push({ path: htmlRelPath, content: htmlContent });
+
+                        entryObj = {
+                            title,
+                            path: htmlRelPath
+                        };
+                        if (!serverWritable) entryObj.inlineContent = htmlContent;
+                        targetCollection[slug] = entryObj;
+                    }
+                }
+
+                const savedOnDisk = await persistToDiskIfAvailable(filesToWrite);
+                closeStudioModal();
+
+                const navEl = document.querySelector(`.sidebar .nav-item[data-cat="${category}"]`);
+                navigateCategory(category, navEl);
+
+                showToast(savedOnDisk
+                    ? `✅ "${title}" salvo diretamente nos arquivos do projeto!`
+                    : `✅ "${title}" salvo no Compêndio!`);
+
+            } catch (err) {
+                showToast('Erro ao salvar: ' + err.message);
+            }
+        }
+
+        function editActiveEntry() {
+            if (!activeItemContext) return;
+            const { itemData, loadedJson } = activeItemContext;
+            openStudioModal(true);
+
+            if (itemData.tipo === 'json' && loadedJson) {
+                document.getElementById('json-entry-title').value = itemData.title || loadedJson.name || '';
+                document.getElementById('json-raw-input').value = JSON.stringify(loadedJson, null, 2);
+                switchStudioMode('5etools');
+            } else if (isImagePath(itemData.path, itemData.tipo)) {
+                switchStudioMode('article');
+                document.getElementById('va-subtype').value = 'map';
+                document.getElementById('va-title').value = itemData.title || '';
+                toggleArticleSubtype();
+            } else {
+                document.getElementById('json-entry-title').value = itemData.title || '';
+                switchStudioMode('5etools');
+            }
+            updateStudioPreview();
+        }
+
+        async function deleteActiveEntry() {
+            if (!activeItemContext) return;
+            const { key, itemData, collection } = activeItemContext;
+            if (!confirm(`Tem certeza que deseja remover "${itemData.title || key}" do Compêndio?`)) return;
+
+            delete collection[key];
+            const savedOnDisk = await persistToDiskIfAvailable([]);
+            const navEl = document.querySelector(`.sidebar .nav-item[data-cat="${currentCategory}"]`);
+            navigateCategory(currentCategory, navEl);
+            showToast(savedOnDisk ? '🗑️ Página removida do Compêndio e do dados.js!' : '🗑️ Página removida!');
+        }
+
+        function exportBackup() {
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                compendioData,
+                virtualFiles
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `compendio-rpg-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            showToast('📦 Backup exportado com sucesso!');
+        }
+
+        function importBackup(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async () => {
+                try {
+                    const parsed = JSON.parse(reader.result);
+                    if (parsed.compendioData) {
+                        Object.assign(compendioData, parsed.compendioData);
+                    }
+                    if (parsed.virtualFiles) {
+                        Object.assign(virtualFiles, parsed.virtualFiles);
+                    }
+                    await persistToDiskIfAvailable([]);
+                    navigateCategory(currentCategory, document.querySelector(`.sidebar .nav-item[data-cat="${currentCategory}"]`));
+                    showToast('✅ Backup restaurado com sucesso!');
+                } catch (e) {
+                    showToast('Arquivo de backup inválido.');
+                }
+            };
+            reader.readAsText(file);
         }
     </script>
 </body>
